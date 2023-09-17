@@ -39,19 +39,16 @@ export class TodosService {
   }
 
   async updateDetail(id: number, detail: string): Promise<void> {
-    const res = await this.todoRepository.findOne(id, {
-      relations: ['details'],
-    });
-    console.log(res.details);
-    if (!res.details) {
+    const res = await this.todoRepository.findOne({ where: { id } });
+    if (!res.detailsId) {
       return;
     }
-    await this.detailRepository.update(res.details.id, { detail: detail });
+    await this.detailRepository.update(res.detailsId, { detail });
     return;
   }
 
   async find(id): Promise<CreateTodoDTO> {
-    const todos = await this.todoRepository.findOne(id);
+    const todos = await this.todoRepository.findOne({ where: { id } });
     return todos;
   }
 

@@ -34,7 +34,11 @@ export const EditModal: React.FC<Props> = ({
   setIsOpenCardModal,
   fetchList,
 }) => {
-  const { register, handleSubmit } = useForm<InputProps>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<InputProps>({
     mode: "onChange",
   });
 
@@ -65,28 +69,25 @@ export const EditModal: React.FC<Props> = ({
         </header>
         <section className="modal-card-body">
           <input
-            name="title"
             className="input"
             type="text"
             defaultValue={item.data}
-            // ref={register({
-            //   required: "This field is required",
-            //   maxLength: { value: 50, message: "最大文字数は50文字です" },
-            // })}
+            {...register("title", {
+              required: "入力してください。",
+              maxLength: { value: 50, message: "最大文字数は50文字です" },
+            })}
           />
-          {/* <div style={{ color: "red" }}>{errors.title?.message}</div> */}
+          <div style={{ color: "red" }}>{errors.title?.message}</div>
           <textarea
-            name="detail"
             className="textarea"
             defaultValue={item.details.detail}
             placeholder="Input detail"
-            // ref={register}
+            {...register("detail")}
           />
           <input
-            name="deadLine"
             type="date"
             className="input"
-            // ref={register}
+            {...register("deadLine")}
             defaultValue={String(item.dead_line).substring(0, 10)}
           />
         </section>

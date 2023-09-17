@@ -29,8 +29,11 @@ export class Todo {
   details?: Details;
 
   @Column({ default: null })
+  detailsId: number;
+
+  @Column({ default: null })
   dead_line: Date;
 
-  // @Column()
-  // created_at: Date;
+  @Column()
+  created_at: Date;
 }
