@@ -1,0 +1,133 @@
+{
+  "title": "Contact Us",
+  "fields": [
+    {
+      "name": "Product",
+      "type": "block",
+      "fields": [
+        {
+          "name": "Product name",
+          "type": "text",
+          "value": "{modelName}",
+          "fullName": "製品情報.機種名",
+          "localizedName": {
+            "de": "Produktname",
+            "en": "Product name",
+            "fr": "Nom du produit",
+            "it": "Nome del prodotto"
+          }
+        },
+        {
+          "name": "Serial number",
+          "type": "text",
+          "value": "{serialNumber}",
+          "fullName": "製品情報.製造番号",
+          "localizedName": {
+            "de": "Seriennummer",
+            "en": "Serial number",
+            "fr": "Numéro de série",
+            "it": "Numero di serie"
+          }
+        }
+      ],
+      "localizedName": {
+        "de": "Produkt",
+        "en": "Product",
+        "fr": "Produit",
+        "it": "Prodotto"
+      }
+    },
+    {
+      "name": "FANUC SWITZERLAND",
+      "type": "block",
+      "fields": [
+        {
+          "name": "Country or Region",
+          "type": "text",
+          "value": "Switzerland",
+          "fullName": "連絡先.国（地域）",
+          "localizedName": {
+            "de": "Land oder Region",
+            "en": "Country or Region",
+            "fr": "Pays ou région",
+            "it": "Paese o regione"
+          },
+          "localizedValue": {
+            "de": "Schweiz",
+            "en": "Switzerland",
+            "fr": "Suisse",
+            "it": "Svizzera"
+          }
+        },
+        {
+          "name": "Phone",
+          "type": "text",
+          "value": "[032-343-44-44](tel:0323434444)  \n[+41-32-343-44-44](tel:+41323434444)(International)",
+          "format": "markdown",
+          "fullName": "連絡先.電話",
+          "localizedName": {
+            "de": "Telefon",
+            "en": "Phone",
+            "fr": "Téléphone",
+            "it": "Telefono"
+          },
+          "localizedValue": {
+            "de": "[032-343-44-44](tel:0323434444)  \n[+41-32-343-44-44](tel:+41323434444)(International)",
+            "en": "[032-343-44-44](tel:0323434444)  \n[+41-32-343-44-44](tel:+41323434444)(International)",
+            "fr": "[032-343-44-44](tel:0323434444)  \n[+41-32-343-44-44](tel:+41323434444)(International)",
+            "it": "[032-343-44-44](tel:0323434444)  \n[+41-32-343-44-44](tel:+41323434444)(Internazionale)"
+          }
+        },
+        {
+          "name": "Web page",
+          "type": "text",
+          "value": "[https://www.fanuc.eu/ch/en](https://www.fanuc.eu/ch/en)",
+          "format": "markdown",
+          "fullName": "連絡先.Web",
+          "localizedName": {
+            "de": "Web-Seite",
+            "en": "Web page",
+            "fr": "Page web",
+            "it": "Pagina web"
+          },
+          "localizedValue": {
+            "de": "[https://www.fanuc.eu/ch/en](https://www.fanuc.eu/ch/en)",
+            "en": "[https://www.fanuc.eu/ch/en](https://www.fanuc.eu/ch/en)",
+            "fr": "[https://www.fanuc.eu/ch/en](https://www.fanuc.eu/ch/en)",
+            "it": "[https://www.fanuc.eu/ch/en](https://www.fanuc.eu/ch/en)"
+          }
+        },
+        {
+          "name": "Address",
+          "type": "text",
+          "value": "Grenchenstrasse 7, CH-2504 Biel/Bienne, Switzerland",
+          "fullName": "連絡先.住所",
+          "localizedName": {
+            "de": "Adresse",
+            "en": "Address",
+            "fr": "Adresse",
+            "it": "Indirizzo"
+          },
+          "localizedValue": {
+            "de": "Grenchenstrasse 7, CH-2504 Biel/ Bienne, Suisse ",
+            "en": "Grenchenstrasse 7, CH-2504 Biel/Bienne, Switzerland",
+            "fr": "Grenchenstrasse 7, CH-2504 Biel/ Bienne, Switzerland ",
+            "it": "Grenchenstrasse 7, CH-2504 Biel/ Bienne, Schweiz "
+          }
+        }
+      ],
+      "localizedName": {
+        "de": "FANUC SWITZERLAND",
+        "en": "FANUC SWITZERLAND",
+        "fr": "FANUC SWITZERLAND",
+        "it": "FANUC SWITZERLAND"
+      }
+    }
+  ],
+  "localizedTitle": {
+    "de": "Kontaktieren Sie uns",
+    "en": "Contact Us",
+    "fr": "Contactez-nous",
+    "it": "Contattateci"
+  }
+}

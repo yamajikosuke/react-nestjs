@@ -1,0 +1,66 @@
+export const items = [
+  { Key: 'FAC_7', CountryCode: 'US', ModelName: 'CNC', ModelId: '1' },
+  { Key: 'FAC_7', CountryCode: 'US', ModelName: 'LASER', ModelId: '7' },
+  { Key: 'FAC_7', CountryCode: 'US', ModelName: 'ROBOT', ModelId: '2' },
+  {
+    Key: 'FAC_7',
+    CountryCode: 'US',
+    ModelName: 'ROBODRILL',
+    ModelId: '3',
+  },
+  {
+    Key: 'FAC_11',
+    CountryCode: 'US',
+    ModelName: 'ROBODRILL',
+    ModelId: '3',
+  },
+  {
+    Key: 'FAC_12',
+    CountryCode: 'US',
+    ModelName: 'ROBOSHOT',
+    ModelId: '5',
+  },
+  {
+    Key: 'FAC_11',
+    CountryCode: 'US',
+    ModelName: 'ROBOCUT',
+    ModelId: '4',
+  },
+  { Key: 'FAC_15', CountryCode: 'CA', ModelName: 'CNC', ModelId: '1' },
+  {
+    Key: 'FAC_15',
+    CountryCode: 'CA',
+    ModelName: 'LASER',
+    ModelId: '7',
+  },
+  {
+    Key: 'FAC_17',
+    CountryCode: 'CA',
+    ModelName: 'ROBOT',
+    ModelId: '2',
+  },
+  {
+    Key: 'FAC_15',
+    CountryCode: 'CA',
+    ModelName: 'ROBODRILL',
+    ModelId: '3',
+  },
+  {
+    Key: 'FAC_19',
+    CountryCode: 'CA',
+    ModelName: 'ROBODRILL',
+    ModelId: '3',
+  },
+  {
+    Key: 'FAC_15',
+    CountryCode: 'CA',
+    ModelName: 'ROBOCUT',
+    ModelId: '4',
+  },
+  {
+    Key: 'FAC_19',
+    CountryCode: 'CA',
+    ModelName: 'ROBOCUT',
+    ModelId: '4',
+  },
+];

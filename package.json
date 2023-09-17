@@ -1,0 +1,8 @@
+{
+  "name": "react-app",
+  "version": "0.0.0",
+  "scripts": {
+    "dev:client": "npm start --prefix ./packages/client",
+    "dev:server": "npm start --prefix ./packages/server"
+  }
+}

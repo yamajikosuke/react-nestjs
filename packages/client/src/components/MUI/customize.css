@@ -1,0 +1,22 @@
+.Button {
+  color: black;
+}
+
+/* Increase the specificity */
+.Button:disabled {
+  color: white;
+}
+
+.MenuItem {
+  color: orange;
+}
+
+/* Increase the specificity */
+.MenuItem.Mui-selected {
+  color: blue;
+}
+
+/* ✅ OK */
+.MuiOutlinedInput-root.Mui-error {
+  color: red;
+}

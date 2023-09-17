@@ -1,0 +1,314 @@
+{
+  "title": "FA Service Desk",
+  "fields": [
+    {
+      "name": "Notice from the Call Center",
+      "type": "block",
+      "fields": [
+        {
+          "name": "Message",
+          "type": "text",
+          "value": "If a representative is unable to contact you during business hours, we will respond to your inquiry on the next business day or later. Contact hours are as follows",
+          "fullName": "お知らせ.内容",
+          "localizedName": { "en": "Contacts", "ja": "内容" },
+          "localizedValue": {
+            "en": "If a representative is unable to contact you during business hours, we will respond to your inquiry on the next business day or later. Contact hours are as follows",
+            "ja": "営業時間内に担当者から御連絡できなかったお問い合わせについては翌営業日以降に対応いたします。窓口の営業時間は下記の通りです。"
+          }
+        },
+        {
+          "name": "Open",
+          "type": "text",
+          "value": "Monday-Friday 8:40am-8:00pm  \nSaturday 8:40am-5:10pm  \nSunday and Holidays Closed",
+          "format": "markdown",
+          "fullName": "お知らせ.営業時間",
+          "localizedName": { "en": "Business Hours", "ja": "営業時間" },
+          "localizedValue": {
+            "en": "Monday-Friday 8:40am-8:00pm  \nSaturday 8:40am-5:10pm  \nSunday and Holidays Closed",
+            "ja": "月～金　8:40～20:00  \n土　　　8:40～17:10  \n日・祝　休み"
+          }
+        },
+        {
+          "name": "MemberSite Link",
+          "type": "text",
+          "value": "[Member Site](https://store.member.fanuc.co.jp/fanuc/store ''Member Site'')",
+          "format": "markdown",
+          "fullName": "お知らせ.会員サイトリンク",
+          "localizedName": {
+            "en": "MemberSite Link",
+            "ja": "会員サイトリンク"
+          },
+          "localizedValue": {
+            "en": "[Member Site](https://store.member.fanuc.co.jp/fanuc/store ''Member Site'')",
+            "ja": "[会員サイトへ](https://store.member.fanuc.co.jp/fanuc/store ''会員サイトへ'')"
+          }
+        }
+      ],
+      "localizedName": {
+        "en": "Notice from the Call Center",
+        "ja": "コールセンターからのお知らせ"
+      }
+    },
+    {
+      "name": "Products to be inquired about",
+      "type": "block",
+      "fields": [
+        {
+          "name": "Model name",
+          "type": "text",
+          "value": "{modelName}",
+          "fullName": "製品情報.機種名",
+          "localizedName": { "en": "Model name", "ja": "機種名" }
+        },
+        {
+          "name": "Serial number",
+          "type": "text",
+          "value": "{serialNumber}",
+          "fullName": "製品情報.製造番号",
+          "localizedName": { "en": "Serial number", "ja": "製造番号" }
+        },
+        {
+          "name": "Label number",
+          "type": "text",
+          "value": "{displayLabelNumber}",
+          "fullName": "製品情報.ラベル番号",
+          "localizedName": { "en": "Label number", "ja": "ラベル番号" }
+        }
+      ],
+      "localizedName": {
+        "en": "Products to be inquired about",
+        "ja": "お問い合わせ対象商品"
+      }
+    },
+    {
+      "name": "Details of your inquiry",
+      "type": "block",
+      "fields": [
+        {
+          "name": "Inquiry Category",
+          "type": "select",
+          "options": ["", "Malfunction,Trouble", "Parts Purchase", "Other"],
+          "fullName": "お問い合わせ内容.種別",
+          "validation": { "required": true },
+          "localizedName": { "en": "Inquiry Category", "ja": "種別" },
+          "localizedOptions": [
+            { "en": "", "ja": "" },
+            { "en": "Malfunction, Trouble", "ja": "故障・トラブル" },
+            { "en": "Parts Purchase", "ja": "部品購入" },
+            { "en": "Other", "ja": "その他" }
+          ]
+        },
+        {
+          "name": "Alarm number",
+          "type": "input-array",
+          "fullName": "お問い合わせ内容.アラーム番号",
+          "validation": { "required": false, "maxlength": 10 },
+          "placeholder": "Enter the alarm number",
+          "localizedName": { "en": "Alarm number", "ja": "アラーム番号" },
+          "localizedPlaceholder": {
+            "en": "Enter the alarm number",
+            "ja": "アラーム番号を入力してください"
+          }
+        },
+        {
+          "name": "Details",
+          "type": "textarea",
+          "fullName": "お問い合わせ内容.内容",
+          "validation": { "required": false, "maxlength": 2000 },
+          "placeholder": "Please enter your details",
+          "localizedName": { "en": "Details", "ja": "内容" },
+          "localizedPlaceholder": {
+            "en": "Please enter your details",
+            "ja": "内容を入力してください"
+          }
+        },
+        {
+          "name": "frequency of occurrence",
+          "type": "select",
+          "options": [
+            "",
+            "Always occurs",
+            "Several times an hour",
+            "Several times a day",
+            "Several times a week",
+            "Less than once a week"
+          ],
+          "fullName": "お問い合わせ内容.発生頻度",
+          "validation": { "required": false },
+          "localizedName": {
+            "en": "frequency of occurrence",
+            "ja": "発生頻度"
+          },
+          "localizedOptions": [
+            { "en": "", "ja": "" },
+            { "en": "Always occurs", "ja": "常に発生" },
+            { "en": "Several times an hour", "ja": "１時間に数回" },
+            { "en": "Several times a day", "ja": "１日に数回" },
+            { "en": "Several times a week", "ja": "１週間に数回" },
+            { "en": "Less than once a week", "ja": "１週間に１回以下" }
+          ]
+        },
+        {
+          "name": "Attaching files and taking photos",
+          "type": "upload",
+          "fullName": "お問い合わせ内容.ファイル添付・写真撮影",
+          "validation": { "required": false },
+          "localizedName": {
+            "en": "Attaching files and taking photos",
+            "ja": "ファイル添付・写真撮影"
+          }
+        }
+      ],
+      "localizedName": {
+        "en": "Details of your inquiry",
+        "ja": "お問い合わせ内容"
+      }
+    },
+    {
+      "name": "Contact Information",
+      "type": "block",
+      "fields": [
+        {
+          "name": "Company name",
+          "type": "input",
+          "fullName": "ご連絡先.会社名",
+          "validation": { "required": true, "maxlength": 50 },
+          "placeholder": "Please enter your company name",
+          "localizedName": { "en": "Company name", "ja": "会社名" },
+          "localizedPlaceholder": {
+            "en": "Please enter your company name",
+            "ja": "会社名を入力してください"
+          }
+        },
+        {
+          "name": "Department",
+          "type": "input",
+          "fullName": "ご連絡先.部署",
+          "validation": { "required": false, "maxlength": 50 },
+          "placeholder": "Please enter your department name",
+          "localizedName": { "en": "Department", "ja": "部署" },
+          "localizedPlaceholder": {
+            "en": "Please enter your department name",
+            "ja": "部署名を入力してください"
+          }
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "name": "Last Name",
+              "type": "input",
+              "fullName": "ご連絡先.姓",
+              "validation": { "required": true, "maxlength": 10 },
+              "localizedName": { "en": "Last Name", "ja": "姓" },
+              "localizedPlaceholder": { "en": "Last Name", "ja": "姓" }
+            },
+            {
+              "name": "First Name",
+              "type": "input",
+              "fullName": "ご連絡先.名",
+              "validation": { "required": true, "maxlength": 10 },
+              "localizedName": { "en": "First Name", "ja": "名" },
+              "localizedPlaceholder": { "en": "First Name", "ja": "名" }
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "fields": [
+            {
+              "name": "Furigana (Last Name)",
+              "type": "input",
+              "fullName": "ご連絡先.ふりがな（姓）",
+              "validation": {
+                "pattern": {
+                  "name": "hiragana",
+                  "value": "^[ぁ-んーゔゕゖ]+$",
+                  "localizedName": { "en": "hiragana", "ja": "ひらがな" }
+                },
+                "required": false,
+                "maxlength": 10
+              },
+              "localizedName": {
+                "en": "Furigana (Last Name)",
+                "ja": "ふりがな（姓）"
+              },
+              "localizedPlaceholder": {
+                "en": "Furigana (Last Name)",
+                "ja": "ふりがな（姓）"
+              }
+            },
+            {
+              "name": "Furigana (First Name)",
+              "type": "input",
+              "fullName": "ご連絡先.ふりがな（名）",
+              "validation": {
+                "pattern": {
+                  "name": "hiragana",
+                  "value": "^[ぁ-んーゔゕゖ]+$",
+                  "localizedName": { "en": "hiragana", "ja": "ひらがな" }
+                },
+                "required": false,
+                "maxlength": 10
+              },
+              "localizedName": {
+                "en": "Furigana (First Name)",
+                "ja": "ふりがな（名）"
+              },
+              "localizedPlaceholder": {
+                "en": "Furigana (First Name)",
+                "ja": "ふりがな（名）"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Representative phone number",
+          "type": "input",
+          "fullName": "ご連絡先.代表電話",
+          "validation": {
+            "pattern": {
+              "name": "Number",
+              "value": "^\\d*$",
+              "localizedName": { "en": "Number", "ja": "数字" }
+            },
+            "required": false,
+            "maxlength": 15
+          },
+          "localizedName": {
+            "en": "Representative phone number",
+            "ja": "代表電話番号"
+          },
+          "localizedPlaceholder": {
+            "en": "Please enter without hyphens",
+            "ja": "ハイフン抜きで入力してください"
+          }
+        },
+        {
+          "name": "Contact person phone number",
+          "type": "input",
+          "fullName": "ご連絡先.担当者電話",
+          "validation": {
+            "pattern": {
+              "name": "Number",
+              "value": "^\\d*$",
+              "localizedName": { "en": "Number", "ja": "数字" }
+            },
+            "required": true,
+            "maxlength": 15
+          },
+          "localizedName": {
+            "en": "Contact person phone number",
+            "ja": "担当者電話番号"
+          },
+          "localizedPlaceholder": {
+            "en": "Please enter without hyphens",
+            "ja": "ハイフン抜きで入力してください"
+          }
+        }
+      ],
+      "localizedName": { "en": "Contact Information", "ja": "ご連絡先" }
+    }
+  ],
+  "localizedTitle": { "en": "FA Service Desk", "ja": "FAサービス窓口" }
+}
