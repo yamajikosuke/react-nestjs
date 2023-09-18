@@ -34,6 +34,6 @@ export class Todo {
   @Column({ default: null })
   dead_line: Date;
 
-  @Column()
-  created_at: Date;
+  // @Column()
+  // created_at: Date;
 }

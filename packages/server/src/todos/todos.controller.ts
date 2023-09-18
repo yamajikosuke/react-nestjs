@@ -12,7 +12,6 @@ import {
   Headers,
 } from '@nestjs/common';
 import { CreateTodoDTO } from './todos.dto';
-import { TodosModule } from './todos.module';
 import { TodosService } from './todos.service';
 
 @Controller('todos')
@@ -30,10 +29,6 @@ export class TodosController {
   @HttpCode(HttpStatus.CREATED)
   async createTodo(@Body() createTodoDTO: CreateTodoDTO) {
     try {
-      console.log('createTodoDTO');
-      console.log(createTodoDTO);
-      console.log('');
-
       await this.todosService.register(createTodoDTO);
     } catch (e) {
       throw new HttpException(
