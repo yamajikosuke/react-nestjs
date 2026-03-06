@@ -4,6 +4,7 @@ import { Repository, DeleteResult, UpdateResult } from 'typeorm';
 import { CreateTodoDTO } from './todos.dto';
 import { Todo } from './todos.entity';
 import { Details } from './details.entity';
+import { Category } from './category.entity';
 
 const SALT = '12345';
 
@@ -14,6 +15,8 @@ export class TodosService {
     private readonly todoRepository: Repository<Todo>,
     @InjectRepository(Details)
     private readonly detailRepository: Repository<Details>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
   ) {}
 
   async delete(id: number): Promise<DeleteResult> {
@@ -45,6 +48,11 @@ export class TodosService {
       relations: ['details'],
     });
     return todos;
+  }
+
+  async getCategory(): Promise<any> {
+    const res = await this.categoryRepository.find();
+    return res;
   }
 
   async register(todoData: Record<string, any>): Promise<void> {

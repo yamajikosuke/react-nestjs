@@ -18,11 +18,16 @@ import { TodosService } from './todos.service';
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
-  @Get()
+  @Get('list')
   async getTodo(@Headers('accept-language') language: string) {
     console.log('Accept-Language:', language.split(',')[0]);
 
     return await this.todosService.findAll();
+  }
+
+  @Get('category')
+  async getCategory() {
+    return await this.todosService.getCategory();
   }
 
   @Post('register')

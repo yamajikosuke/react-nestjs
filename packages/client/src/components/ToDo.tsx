@@ -19,8 +19,13 @@ type itemProps = {
   dead_line: Date;
 };
 
+type CategoryProps = {
+  name: string;
+};
+
 export const ToDo: React.FC = () => {
   const [items, setItems] = useState<itemProps[]>([]);
+  const [category, setCategory] = useState<CategoryProps[]>([]);
   const [isOpenCardModal, setIsOpenCardModal] = useState(false);
   const [editId, setEditId] = useState<number>(0);
   const {
@@ -31,12 +36,19 @@ export const ToDo: React.FC = () => {
   } = useForm<InputProps>();
 
   const fetchList = useCallback(async () => {
-    const res = await axios.get("/todos/");
+    const res = await axios.get("/todos/list");
     setItems(res.data);
+  }, []);
+
+  const getCategoryList = useCallback(async () => {
+    const res = await axios.get("/todos/category");
+    // console.log(res.data);
+    setCategory(res.data);
   }, []);
 
   useEffect(() => {
     fetchList();
+    getCategoryList();
   }, [fetchList]);
 
   const getItem = (id: number) => {
@@ -89,11 +101,10 @@ export const ToDo: React.FC = () => {
             <input
               className={errors.title ? "input is-danger" : "input"}
               type="text"
-              {...register("title", { required: "入力してください。" })}
-              // ref={register({
-              //   required: "This field is required",
-              //   maxLength: { value: 50, message: "最大文字数は50文字です" },
-              // })}
+              {...register("title", {
+                required: "入力してください。",
+                maxLength: { value: 50, message: "最大文字数は50文字です" },
+              })}
               placeholder="Text input"
             />
           </div>
@@ -106,6 +117,18 @@ export const ToDo: React.FC = () => {
               className="textarea"
               placeholder="Input detail"
             />
+          </div>
+        </div>
+        <div className="field">
+          <div className="control">
+            <div className="select">
+              <select>
+                <option>選択</option>
+                {category.map((item) => {
+                  return <option>{item.name}</option>;
+                })}
+              </select>
+            </div>
           </div>
         </div>
         <div className="field">

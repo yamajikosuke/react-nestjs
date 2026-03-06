@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { User } from './users/users.entity';
+// import { User } from './users/users.entity';
 import { UsersModule } from './users/users.module';
 import { Todo } from './todos/todos.entity';
 import { Details } from './todos/details.entity';
+import { Category } from './todos/category.entity';
 import { TodosModule } from './todos/todos.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
-import { Key } from './dictionary/keys.entity';
+// import { Key } from './dictionary/keys.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Key } from './dictionary/keys.entity';
       username: 'root',
       password: 'password',
       database: 'develop',
-      entities: [User, Todo, Details, Key],
+      entities: [Todo, Details, Category],
       synchronize: true,
     }),
     UsersModule,
