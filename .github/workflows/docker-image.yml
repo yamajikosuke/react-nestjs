@@ -74,7 +74,14 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: client-build
-          path: packages/client/build/
+          path: ./client-build-temp/
+
+      - name: Verify artifact contents
+        run: |
+          echo "=== Checking artifact contents ==="
+          ls -la ./client-build-temp/
+          echo "=== Full directory tree ==="
+          find ./client-build-temp/ -type f | head -20
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
@@ -94,7 +101,6 @@ jobs:
 
             # Deploy backend with docker-compose
             cd packages/server
-            # Check if docker-compose.yml exists
             if [ ! -f docker-compose.yml ]; then
               echo "docker-compose.yml not found in packages/server"
               exit 1
@@ -102,15 +108,16 @@ jobs:
             docker-compose down || true
             docker-compose up -d --build
 
-      - name: Copy client build to VPS
+      - name: Copy client build to VPS via SCP
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "packages/client/build/"
+          source: "./client-build-temp/"
           target: "/tmp/client-build"
+          strip_components: 1
 
       - name: Deploy client files to web root
         uses: appleboy/ssh-action@master
@@ -120,8 +127,32 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            echo "=== Starting client deployment ==="
+            echo "Checking /tmp/client-build contents:"
+            ls -la /tmp/client-build/ | head -20
+
+            # Prepare web root
             mkdir -p /var/www/html
-            sudo rm -rf /var/www/html/*
-            sudo cp -r /tmp/client-build/build/* /var/www/html/
-            sudo chown -R www-data:www-data /var/www/html
-            echo "✅ Client build deployed to /var/www/html"
+
+            # Copy files - try to preserve ownership
+            if [ -d /tmp/client-build ]; then
+              echo "Copying files to /var/www/html..."
+              rm -rf /var/www/html/*
+              cp -r /tmp/client-build/* /var/www/html/
+              
+              # Try to set proper ownership if running as root or with sudo
+              if command -v sudo &> /dev/null; then
+                sudo chown -R www-data:www-data /var/www/html/ 2>/dev/null || chown -R www-data:www-data /var/www/html/ 2>/dev/null || true
+                sudo chmod -R 755 /var/www/html/ 2>/dev/null || chmod -R 755 /var/www/html/ 2>/dev/null || true
+              else
+                chown -R www-data:www-data /var/www/html/ 2>/dev/null || true
+                chmod -R 755 /var/www/html/ 2>/dev/null || true
+              fi
+              
+              echo "✅ Client build deployed to /var/www/html"
+              echo "=== Final verification ==="
+              ls -la /var/www/html/ | head -20
+            else
+              echo "❌ Error: /tmp/client-build not found"
+              exit 1
+            fi
