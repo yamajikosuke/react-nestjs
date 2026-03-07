@@ -70,7 +70,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /home/apps/react-nestjs
+            cd /home/admin/react-nestjs
             git pull origin main
             docker-compose down
             docker-compose up -d --build
