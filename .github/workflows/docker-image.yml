@@ -118,6 +118,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          request_pty: true
           script: |
             echo "=== Setting up web root ==="
 
