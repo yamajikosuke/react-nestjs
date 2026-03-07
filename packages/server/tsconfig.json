@@ -16,7 +16,6 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
-    "suppressImplicitAnyIndexErrors": true,
     "noEmitOnError": false,
     "noEmit": false,
     "strict": false,
