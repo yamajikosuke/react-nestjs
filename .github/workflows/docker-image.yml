@@ -35,6 +35,13 @@ jobs:
       - name: Build server
         run: npm run build --prefix ./packages/server
 
+      - name: Upload client build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: client-build
+          path: packages/client/build/
+          retention-days: 1
+
   build-and-push-docker:
     needs: build
     runs-on: ubuntu-latest
@@ -63,6 +70,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Download client build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: client-build
+          path: packages/client/build/
+
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
         with:
@@ -79,15 +92,6 @@ jobs:
               git clone https://github.com/yamajikosuke/react-nestjs.git .
             fi
 
-            # Deploy client build to web server
-            mkdir -p /var/www/html
-            if [ -d packages/client/build ]; then
-              sudo cp -r packages/client/build/* /var/www/html/
-              echo "✅ Client build deployed to /var/www/html"
-            else
-              echo "⚠️ Client build folder not found"
-            fi
-
             # Deploy backend with docker-compose
             cd packages/server
             # Check if docker-compose.yml exists
@@ -97,3 +101,27 @@ jobs:
             fi
             docker-compose down || true
             docker-compose up -d --build
+
+      - name: Copy client build to VPS
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "packages/client/build/"
+          target: "/tmp/client-build"
+
+      - name: Deploy client files to web root
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            mkdir -p /var/www/html
+            sudo rm -rf /var/www/html/*
+            sudo cp -r /tmp/client-build/build/* /var/www/html/
+            sudo chown -R www-data:www-data /var/www/html
+            echo "✅ Client build deployed to /var/www/html"
