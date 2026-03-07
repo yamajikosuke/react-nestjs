@@ -34,8 +34,6 @@ jobs:
 
       - name: Build server
         run: npm run build --prefix ./packages/server
-        env:
-          NODE_OPTIONS: "--max_old_space_size=4096"
 
   build-and-push-docker:
     needs: build
