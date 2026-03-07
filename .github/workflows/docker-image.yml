@@ -7,7 +7,7 @@ on:
     branches: ["main"]
 
 jobs:
-  build:
+build:
     runs-on: ubuntu-latest
     strategy:
     matrix:
@@ -22,8 +22,7 @@ jobs:
     uses: actions/setup-node@v3
     with:
         node-version: "19.x"
-
-    - name: Cache dependencies
+        - name: Cache dependencies
     uses: actions/cache@v2
     with:
         path: ~/.npm
