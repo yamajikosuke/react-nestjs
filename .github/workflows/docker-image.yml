@@ -74,14 +74,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: client-build
-          path: ./client-build-temp/
+          path: ./client-build-output/
 
-      - name: Verify artifact contents
-        run: |
-          echo "=== Checking artifact contents ==="
-          ls -la ./client-build-temp/
-          echo "=== Full directory tree ==="
-          find ./client-build-temp/ -type f | head -20
+      - name: Copy client build to VPS via SCP
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./client-build-output/"
+          target: "/tmp/react-build"
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
@@ -108,18 +111,7 @@ jobs:
             docker-compose down || true
             docker-compose up -d --build
 
-      - name: Copy client build to VPS via SCP
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "./client-build-temp/"
-          target: "/tmp/client-build"
-          strip_components: 1
-
-      - name: Deploy client files to web root
+      - name: Setup web root and deploy client files
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -127,32 +119,34 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            echo "=== Starting client deployment ==="
-            echo "Checking /tmp/client-build contents:"
-            ls -la /tmp/client-build/ | head -20
+            echo "=== Setting up web root ==="
 
-            # Prepare web root
-            mkdir -p /var/www/html
+            # Remove old web root and create new one
+            sudo rm -rf /var/www/html
+            sudo mkdir -p /var/www/html
 
-            # Copy files - try to preserve ownership
-            if [ -d /tmp/client-build ]; then
-              echo "Copying files to /var/www/html..."
-              rm -rf /var/www/html/*
-              cp -r /tmp/client-build/* /var/www/html/
-              
-              # Try to set proper ownership if running as root or with sudo
-              if command -v sudo &> /dev/null; then
-                sudo chown -R www-data:www-data /var/www/html/ 2>/dev/null || chown -R www-data:www-data /var/www/html/ 2>/dev/null || true
-                sudo chmod -R 755 /var/www/html/ 2>/dev/null || chmod -R 755 /var/www/html/ 2>/dev/null || true
-              else
-                chown -R www-data:www-data /var/www/html/ 2>/dev/null || true
-                chmod -R 755 /var/www/html/ 2>/dev/null || true
-              fi
-              
-              echo "✅ Client build deployed to /var/www/html"
-              echo "=== Final verification ==="
-              ls -la /var/www/html/ | head -20
+            # Copy client build files
+            echo "Checking /tmp/react-build contents:"
+            ls -la /tmp/react-build/
+
+            if [ -d /tmp/react-build/client-build-output ]; then
+              echo "Found client-build-output directory, copying from there..."
+              sudo cp -r /tmp/react-build/client-build-output/* /var/www/html/
+            elif [ -d /tmp/react-build ]; then
+              echo "Copying from /tmp/react-build..."
+              sudo cp -r /tmp/react-build/* /var/www/html/
             else
-              echo "❌ Error: /tmp/client-build not found"
+              echo "❌ Error: No build files found in /tmp/react-build"
               exit 1
             fi
+
+            # Set proper permissions
+            sudo chown -R www-data:www-data /var/www/html/
+            sudo chmod -R 755 /var/www/html/
+
+            echo "✅ Client build deployed to /var/www/html"
+            echo "=== Final verification ==="
+            ls -la /var/www/html/ | head -20
+
+            # Cleanup
+            rm -rf /tmp/react-build
