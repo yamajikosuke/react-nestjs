@@ -27,10 +27,13 @@ jobs:
       - name: Install dependencies
         run: npm install --legacy-peer-deps && npm install --prefix ./packages/client --legacy-peer-deps && npm install --prefix ./packages/server --legacy-peer-deps
 
-      - name: Build client and server
-        run: npm run build
+      - name: Build client
+        run: npm run build --prefix ./packages/client
         env:
           CI: false
+
+      - name: Build server
+        run: npm run build --prefix ./packages/server
 
   build-and-push-docker:
     needs: build

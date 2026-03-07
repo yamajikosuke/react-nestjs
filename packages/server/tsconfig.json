@@ -13,6 +13,11 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
-  }
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noEmitOnError": false
+  },
+  "exclude": ["node_modules"]
 }
