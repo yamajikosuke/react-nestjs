@@ -29,6 +29,8 @@ jobs:
 
       - name: Build client and server
         run: npm run build
+        env:
+          CI: false
 
   build-and-push-docker:
     needs: build
