@@ -27,5 +27,4 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           port: ${{secrets.SSH_PORT}}
           script: |
-            cd conoha-app
             git pull origin main
