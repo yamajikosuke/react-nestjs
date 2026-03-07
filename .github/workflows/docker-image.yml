@@ -48,7 +48,8 @@ jobs:
       - name: Build Docker image for server
         uses: docker/build-push-action@v4
         with:
-          file: packages/server/Dockerfile
+          context: ./packages/server
+          file: ./packages/server/Dockerfile
           tags: react-nestjs-server:latest
           outputs: type=docker,dest=/tmp/image.tar
 
@@ -70,7 +71,12 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            mkdir -p /home/admin/react-nestjs
             cd /home/admin/react-nestjs
-            git pull origin main
+            if [ -d .git ]; then
+              git pull origin main
+            else
+              git clone https://github.com/yamajikosuke/react-nestjs.git .
+            fi
             docker-compose down
             docker-compose up -d --build
