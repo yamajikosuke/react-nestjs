@@ -78,5 +78,11 @@ jobs:
             else
               git clone https://github.com/yamajikosuke/react-nestjs.git .
             fi
-            docker-compose down
+            cd packages/server
+            # Check if docker-compose.yml exists
+            if [ ! -f docker-compose.yml ]; then
+              echo "docker-compose.yml not found in packages/server"
+              exit 1
+            fi
+            docker-compose down || true
             docker-compose up -d --build
