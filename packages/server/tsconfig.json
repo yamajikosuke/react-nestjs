@@ -11,13 +11,17 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true,
+    "incremental": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "esModuleInterop": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    "noEmit": false,
+    "strict": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false
   },
   "exclude": ["node_modules"]
 }

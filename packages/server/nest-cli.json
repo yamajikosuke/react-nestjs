@@ -3,6 +3,9 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "skipLibCheck": true,
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "noEmitOnError": false,
+    "noImplicitAny": false,
+    "strict": false
   }
 }
