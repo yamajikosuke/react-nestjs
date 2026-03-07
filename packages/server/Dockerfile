@@ -1,9 +1,9 @@
-FROM node:12.16.2
+FROM node:18
 
 WORKDIR /api-server
 COPY package*.json /api-server/
 
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
 COPY . /api-server/
 
