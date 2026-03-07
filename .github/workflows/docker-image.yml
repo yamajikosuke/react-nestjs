@@ -1,47 +1,71 @@
-name: Docker Image CI
+name: Docker Image CI/CD
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
     branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #   node-version: [19.x]
     steps:
-      # - uses: actions/checkout@v4
-      # - name: Build the Docker image
-      #   run: docker build . --file packages/server/Dockerfile --tag my-image-name:$(date +%s)
-    - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Setup Node
-    uses: actions/setup-node@v3
-    with:
-        node-version: "19.x"
-    uses: actions/cache@v2
-    with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "19.x"
 
-          - run: npm ci
-          - run: npm run build
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - name: Install SSH Key for Deploy
-  #       uses: appleboy/ssh-action@master
-  #       with:
-  #         key: ${{ secrets.SK }}
-  #         host: ${{secrets.SSH_HOST}}
-  #         username: ${{secrets.SSH_USERNAME}}
-  #         port: ${{secrets.SSH_PORT}}
-  #         script: |
-  #           git pull origin main
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build client and server
+        run: npm run build
+
+  build-and-push-docker:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image for server
+        uses: docker/build-push-action@v4
+        with:
+          file: packages/server/Dockerfile
+          tags: react-nestjs-server:latest
+          outputs: type=docker,dest=/tmp/image.tar
+
+      - name: Load Docker image
+        run: docker load --input /tmp/image.tar
+
+  deploy:
+    needs: build-and-push-docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd /home/apps/react-nestjs
+            git pull origin main
+            docker-compose down
+            docker-compose up -d --build
