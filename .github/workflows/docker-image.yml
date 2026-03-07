@@ -78,6 +78,17 @@ jobs:
             else
               git clone https://github.com/yamajikosuke/react-nestjs.git .
             fi
+
+            # Deploy client build to web server
+            mkdir -p /var/www/html
+            if [ -d packages/client/build ]; then
+              sudo cp -r packages/client/build/* /var/www/html/
+              echo "✅ Client build deployed to /var/www/html"
+            else
+              echo "⚠️ Client build folder not found"
+            fi
+
+            # Deploy backend with docker-compose
             cd packages/server
             # Check if docker-compose.yml exists
             if [ ! -f docker-compose.yml ]; then
