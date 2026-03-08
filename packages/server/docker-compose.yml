@@ -11,11 +11,7 @@ services:
         target: /api-server
     depends_on:
       - db-server
-    networks:
-      - app-network
-    dns:
-      - 8.8.8.8
-      - 8.8.4.4
+
   db-server:
     container_name: db-server
     image: mysql:5.7.29
@@ -28,9 +24,3 @@ services:
       MYSQL_DATABASE: develop
       MYSQL_USER: root
       MYSQL_PASSWORD: password
-    networks:
-      - app-network
-
-networks:
-  app-network:
-    driver: bridge
