@@ -5,7 +5,7 @@ export const Top = () => {
   return (
     <section className="section">
       <div className="container">
-        <h1 className="title">React-practice </h1>
+        <h1 className="title">React-Practice </h1>
         <div className="content">
           <ul>
             <li>
