@@ -9,6 +9,7 @@ services:
       - type: bind
         source: .
         target: /api-server
+      - /api-server/node_modules
     depends_on:
       - db-server
 
