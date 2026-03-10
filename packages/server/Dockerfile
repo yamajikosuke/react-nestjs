@@ -7,4 +7,4 @@ RUN npm ci --legacy-peer-deps
 
 COPY . /api-server/
 
-CMD [ "npm", "run", "start:dev"]
+#CMD [ "npm", "run", "start:dev"]
