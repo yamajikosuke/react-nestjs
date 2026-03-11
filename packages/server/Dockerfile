@@ -1,4 +1,4 @@
-# FROM node:18
+FROM node:18
 
 # WORKDIR /api-server
 # COPY package*.json /api-server/
