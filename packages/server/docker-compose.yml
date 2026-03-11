@@ -1,17 +1,17 @@
 services:
-  api-server:
-    build: .
-    tty: true
-    restart: always
-    ports:
-      - '3001:3001'
-    volumes:
-      - type: bind
-        source: .
-        target: /api-server
-      - /api-server/node_modules
-    depends_on:
-      - db-server
+  # api-server:
+  #   build: .
+  #   tty: true
+  #   restart: always
+  #   ports:
+  #     - '3001:3001'
+  #   volumes:
+  #     - type: bind
+  #       source: .
+  #       target: /api-server
+  #     - /api-server/node_modules
+  #   depends_on:
+  #     - db-server
 
   db-server:
     container_name: db-server

@@ -15,7 +15,7 @@ import { DictionaryModule } from './dictionary/dictionary.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'db-server',
+      host: 'localhost',
       port: 3306,
       username: 'root',
       password: 'password',
