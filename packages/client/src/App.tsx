@@ -10,6 +10,7 @@ export const App: React.FC = () => {
   return (
     <Initializer>
       <Routes>
+        <Route path="/users" element={<Page.Users />} />
         <Route path="/hebuban" element={<Page.Hebuban />} />
         <Route path="/stepper" element={<Page.Stepper />} />
         <Route path="/" element={<Page.Top />} />
@@ -76,6 +77,7 @@ export const App: React.FC = () => {
         <Route path="/replace" element={<Page.Replace />} />
         <Route path="/translate" element={<Page.Translate />} />
         <Route path="/formBuilder" element={<Page.FormBuilder />} />
+        <Route path="/users" element={<Page.Users />} />
         {/* <Route path="/jsonGenerator" element={<Page.JsonGenerator />} /> */}
         <Route path="/arrayToJson" element={<Page.ArrayToJson />} />
         <Route

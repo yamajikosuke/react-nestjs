@@ -9,6 +9,7 @@ import { Details } from './todos/details.entity';
 import { Category } from './todos/category.entity';
 import { TodosModule } from './todos/todos.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
+import { User } from './users/users.entity';
 // import { Key } from './dictionary/keys.entity';
 
 @Module({
@@ -20,7 +21,7 @@ import { DictionaryModule } from './dictionary/dictionary.module';
       username: 'root',
       password: 'password',
       database: 'develop',
-      entities: [Todo, Details, Category],
+      entities: [Todo, Details, Category, User],
       synchronize: true,
     }),
     UsersModule,
