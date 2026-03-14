@@ -10,6 +10,7 @@ export const App: React.FC = () => {
   return (
     <Initializer>
       <Routes>
+        <Route path="/users-with-zod" element={<Page.UsersWithZod />} />
         <Route path="/users" element={<Page.Users />} />
         <Route path="/hebuban" element={<Page.Hebuban />} />
         <Route path="/stepper" element={<Page.Stepper />} />

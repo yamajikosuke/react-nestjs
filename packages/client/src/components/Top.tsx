@@ -9,6 +9,9 @@ export const Top = () => {
         <div className="content">
           <ul>
             <li>
+              <Link to="/users-with-zod">UsersWithZod</Link>
+            </li>
+            <li>
               <Link to="/users">Users</Link>
             </li>
             <li>
