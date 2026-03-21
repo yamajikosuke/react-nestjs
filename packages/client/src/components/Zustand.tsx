@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListAlt } from "@fortawesome/free-solid-svg-icons";
-import { useStore } from "../store/useStore";
+import { useStore, useTextStore, useCheckBoxStore } from "../store/useStore";
 
 const IncrementButton = () => {
   const increment = useStore((state) => state.increaseCount);
@@ -12,8 +12,41 @@ const IncrementButton = () => {
   );
 };
 
+const InputText = () => {
+  const text = useTextStore((state) => state.text);
+  const setText = useTextStore((state) => state.setText);
+  return (
+    <div>
+      <input
+        type="text"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <p>入力したテキスト: {text}</p>
+    </div>
+  );
+};
+
+const CheckBox = () => {
+  const isChecked = useCheckBoxStore((state) => state.isChecked);
+  const setChecked = useCheckBoxStore((state) => state.setChecked);
+  return (
+    <div>
+      <label>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={(e) => setChecked(e.target.checked)}
+        />
+        チェックボックス
+      </label>
+    </div>
+  );
+};
+
 export const Zustand: React.FC = () => {
-  const { count, increaseCount, decreaseCount, resetCount } = useStore();
+  const { increaseCount, decreaseCount, resetCount } = useStore();
+  const count = useStore((state) => state.count);
 
   return (
     <section className="section">
@@ -32,6 +65,15 @@ export const Zustand: React.FC = () => {
             rel="noopener noreferrer"
           >
             Learn more about Zustand（公式）
+          </a>
+        </div>
+        <div>
+          <a
+            href="https://zustand.docs.pmnd.rs/learn/getting-started/introduction"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Tutorial（公式）
           </a>
         </div>
         <ul>
@@ -61,6 +103,15 @@ export const Zustand: React.FC = () => {
             >
               軽量なグローバル状態管理ライブラリ「zustand」
             </a>
+          </li>{" "}
+          <li>
+            <a
+              href="https://envader.plus/article/524"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              【初心者向け】ZustandでReactの状態管理を簡単に！使い方を徹底解説！
+            </a>
           </li>
         </ul>
       </div>
@@ -78,6 +129,10 @@ export const Zustand: React.FC = () => {
         <button onClick={decreaseCount}>Decrease</button>
         <button onClick={resetCount}>Reset</button>
       </div>
+      <hr />
+      <InputText />
+      <hr />
+      <CheckBox />
     </section>
   );
 };
