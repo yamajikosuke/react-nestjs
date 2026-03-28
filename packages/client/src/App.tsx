@@ -11,6 +11,7 @@ export const App: React.FC = () => {
     <Initializer>
       <Routes>
         <Route path="/zustand" element={<Page.Zustand />} />
+        <Route path="/qrcode" element={<Page.Qrcode />} />
         <Route path="/users-with-zod" element={<Page.UsersWithZod />} />
         <Route path="/users-with-zod2" element={<Page.UsersWithZod2 />} />
         <Route path="/users" element={<Page.Users />} />

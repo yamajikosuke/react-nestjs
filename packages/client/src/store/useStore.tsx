@@ -23,6 +23,16 @@ type FoodsState = {
   setCheckedFoods: (checkedFoods: string[]) => void;
 };
 
+type UrlState = {
+  url: string;
+  setUrl: (url: string) => void;
+};
+
+export const useUrlStore = create<UrlState>((set) => ({
+  url: "",
+  setUrl: (url: string) => set({ url }),
+}));
+
 export const useStore = create<Count>((set) => ({
   count: 0,
   increaseCount: () => set((state) => ({ count: state.count + 1 })),

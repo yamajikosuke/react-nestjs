@@ -4,6 +4,7 @@ export { Top } from "./Top";
 export { Form } from "./Form";
 export { ToDo } from "./ToDo";
 export { Users } from "./Users";
+export { Qrcode } from "./Qrcode";
 export { UsersWithZod } from "./UsersWithZod";
 export { UsersWithZod2 } from "./UsersWithZod2";
 export { Zustand } from "./Zustand";
