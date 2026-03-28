@@ -5,6 +5,7 @@ export { Form } from "./Form";
 export { ToDo } from "./ToDo";
 export { Users } from "./Users";
 export { UsersWithZod } from "./UsersWithZod";
+export { UsersWithZod2 } from "./UsersWithZod2";
 export { Zustand } from "./Zustand";
 export { SelectDatePage } from "./SelectDatePage";
 export { Intl } from "./Intl";

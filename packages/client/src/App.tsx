@@ -12,6 +12,7 @@ export const App: React.FC = () => {
       <Routes>
         <Route path="/zustand" element={<Page.Zustand />} />
         <Route path="/users-with-zod" element={<Page.UsersWithZod />} />
+        <Route path="/users-with-zod2" element={<Page.UsersWithZod2 />} />
         <Route path="/users" element={<Page.Users />} />
         <Route path="/hebuban" element={<Page.Hebuban />} />
         <Route path="/stepper" element={<Page.Stepper />} />

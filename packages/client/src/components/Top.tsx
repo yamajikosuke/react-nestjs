@@ -15,6 +15,9 @@ export const Top = () => {
               <Link to="/users-with-zod">UsersWithZod</Link>
             </li>
             <li>
+              <Link to="/users-with-zod2">UsersWithZod2</Link>
+            </li>
+            <li>
               <Link to="/users">Users</Link>
             </li>
             <li>

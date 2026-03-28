@@ -50,14 +50,38 @@ export const Zustand: React.FC = () => {
 
   return (
     <section className="section">
+      <h1 className="title">
+        <FontAwesomeIcon icon={faListAlt} />
+        Zustand
+      </h1>
+      <p className="subtitle">
+        Zustand is a simple and fast state management solution for React.
+      </p>
+      <hr />
       <div className="container">
-        <h1 className="title">
-          <FontAwesomeIcon icon={faListAlt} />
-          Zustand
-        </h1>
-        <p className="subtitle">
-          Zustand is a simple and fast state management solution for React.
-        </p>
+        <h2 className="subtitle">Counter Example (with custom hook)</h2>
+        <p>Count: {count}</p>
+        <IncrementButton />
+      </div>
+      <hr />
+      <div className="container">
+        <h2 className="subtitle">Counter Example</h2>
+        <p>Count: {count}</p>
+        <button onClick={increaseCount}>Increase</button>
+        <button onClick={decreaseCount}>Decrease</button>
+        <button onClick={resetCount}>Reset</button>
+      </div>
+      <hr />
+      <div className="container">
+        <InputText />
+      </div>
+      <hr />
+      <div className="container">
+        <CheckBox />
+      </div>
+      <hr />
+      <h2 className="subtitle">参考リンク</h2>
+      <div className="container">
         <div>
           <a
             href="https://github.com/pmndrs/zustand"
@@ -115,24 +139,6 @@ export const Zustand: React.FC = () => {
           </li>
         </ul>
       </div>
-      <hr />
-      <div className="container">
-        <h2 className="subtitle">Counter Example (with custom hook)</h2>
-        <p>Count: {count}</p>
-        <IncrementButton />
-      </div>
-      <hr />
-      <div className="container">
-        <h2 className="subtitle">Counter Example</h2>
-        <p>Count: {count}</p>
-        <button onClick={increaseCount}>Increase</button>
-        <button onClick={decreaseCount}>Decrease</button>
-        <button onClick={resetCount}>Reset</button>
-      </div>
-      <hr />
-      <InputText />
-      <hr />
-      <CheckBox />
     </section>
   );
 };

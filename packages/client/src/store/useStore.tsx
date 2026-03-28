@@ -18,6 +18,11 @@ type CheckBoxState = {
   setChecked: (checked: boolean) => void;
 };
 
+type FoodsState = {
+  checkedFoods: string[];
+  setCheckedFoods: (checkedFoods: string[]) => void;
+};
+
 export const useStore = create<Count>((set) => ({
   count: 0,
   increaseCount: () => set((state) => ({ count: state.count + 1 })),
@@ -36,5 +41,12 @@ export const useCheckBoxStore = create<CheckBoxState>()(
   devtools((set) => ({
     isChecked: false,
     setChecked: (checked: boolean) => set({ isChecked: checked }),
+  })),
+);
+
+export const useFoodsStore = create<FoodsState>()(
+  devtools((set) => ({
+    checkedFoods: [],
+    setCheckedFoods: (checkedFoods: string[]) => set({ checkedFoods }),
   })),
 );
