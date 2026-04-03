@@ -9,6 +9,9 @@ export const Top = () => {
         <div className="content">
           <ul>
             <li>
+              <Link to="/modal">モーダル</Link>
+            </li>
+            <li>
               <Link to="/qrcode">QRコード</Link>
             </li>
             <li>
