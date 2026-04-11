@@ -11,6 +11,10 @@ export const App: React.FC = () => {
     <Initializer>
       <Routes>
         <Route path="/zustand" element={<Page.Zustand />} />
+        <Route
+          path="/asynchronous-processing"
+          element={<Page.AsynchronousProcessing />}
+        />
         <Route path="/modal" element={<Page.ModalTest />} />
         <Route path="/qrcode" element={<Page.Qrcode />} />
         <Route path="/users-with-zod" element={<Page.UsersWithZod />} />

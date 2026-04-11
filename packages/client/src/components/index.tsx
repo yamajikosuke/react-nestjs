@@ -8,6 +8,7 @@ export { Qrcode } from "./Qrcode";
 export { UsersWithZod } from "./UsersWithZod";
 export { UsersWithZod2 } from "./UsersWithZod2";
 export { Zustand } from "./Zustand";
+export { AsynchronousProcessing } from "./AsynchronousProcessing";
 export { ModalTest } from "./ModalTest";
 export { SelectDatePage } from "./SelectDatePage";
 export { Intl } from "./Intl";
