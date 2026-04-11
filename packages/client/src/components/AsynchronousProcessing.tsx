@@ -2,9 +2,18 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListAlt } from "@fortawesome/free-solid-svg-icons";
 import { useStore, useTextStore, useCheckBoxStore } from "../store/useStore";
+import axios from "axios";
+
+type itemProps = {
+  id: number;
+  screenName: string;
+  password: string;
+};
 
 export const AsynchronousProcessing: React.FC = () => {
   const [message, setMessage] = React.useState<string[]>([]);
+  const [items, setItems] = React.useState<itemProps[]>([]);
+
   /*
    * 非同期処理の例
    * 参考サイト
@@ -65,9 +74,62 @@ export const AsynchronousProcessing: React.FC = () => {
     waitAndShowMessage();
   };
 
+  const fetchData = async () => {
+    try {
+      console.log("データを取得中...");
+      const res = await axios.get("/users");
+      return res;
+    } catch (error) {
+      console.log("データを取得中にエラーが発生しました:", error);
+      // Axiosのエラーか確認
+      if (axios.isAxiosError(error)) {
+        console.error("エラーメッセージ:", error.message);
+        // レスポンスがある場合（4xx, 5xxなど）
+        if (error.response) {
+          console.error("ステータスコード:", error.response.status);
+          console.error("データ:", error.response.data);
+        } else {
+          // リクエストは送信されたがレスポンスが届かない場合
+          console.error("レスポンスなし:", error.request);
+        }
+      } else {
+        // Axios以外のエラー
+        console.error("予期せぬエラー:", error);
+      }
+    }
+  };
+
+  const doProcess_01 = () => {
+    return new Promise(
+      (resolve: (value: any) => void, reject: (reason?: any) => void) => {
+        fetchData()
+          .then((res) => {
+            resolve(res);
+          })
+          .catch((err) => {
+            console.error("エラー:", err);
+            reject(err);
+          });
+      },
+    );
+  };
+
+  const initialDisplayProcess = async () => {
+    await doProcess_01()
+      .then((res) => {
+        setItems(res.data);
+      })
+      .catch((err) => {
+        console.log("初期表示の処理中にエラーが発生しました:", err);
+      });
+    // ここでさらに別の非同期処理を行うことも可能
+    // 例: 別のAPIからデータを取得するなど
+  };
+
   //初期表示でwaitAndShowMessageを実行する
   React.useEffect(() => {
-    waitAndShowMessage();
+    //    waitAndShowMessage();
+    initialDisplayProcess();
   }, []);
 
   return (
@@ -88,6 +150,21 @@ export const AsynchronousProcessing: React.FC = () => {
           <div key={index}>{msg}</div>
         ))}
       </p>
+      <table className="table is-fullwidth">
+        <tbody>
+          {items.map((item, idx) => {
+            return (
+              <tr key={idx}>
+                <td></td>
+                <td>
+                  <div>{item.screenName}</div>
+                  <div style={{ fontSize: "0.7rem" }}>{item.password}</div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </section>
   );
 };
