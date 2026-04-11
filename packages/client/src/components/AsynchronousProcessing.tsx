@@ -5,6 +5,11 @@ import { useStore, useTextStore, useCheckBoxStore } from "../store/useStore";
 
 export const AsynchronousProcessing: React.FC = () => {
   const [message, setMessage] = React.useState<string[]>([]);
+  /*
+   * 非同期処理の例
+   * 参考サイト
+   * https://qiita.com/yuki3942/items/85e672acdf76fc375e37
+   */
 
   const doAsync = () => {
     return new Promise((resolve) => {
