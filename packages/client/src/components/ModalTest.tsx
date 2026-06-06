@@ -1,3 +1,4 @@
+/* eslint-disable no-script-url */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import Modal from "react-modal";
@@ -26,12 +27,12 @@ export const ModalTest: React.FC = () => {
       </h1>
       <hr />
       <div>
-        <a href="#" onClick={() => handleClick(1)}>
+        <a href="javascript:void(0)" onClick={() => handleClick(1)}>
           モーダルを開く（その１）
         </a>
       </div>
       <div>
-        <a href="#" onClick={() => handleClick(2)}>
+        <a href="javascript:void(0)" onClick={() => handleClick(2)}>
           モーダルを開く（その２）
         </a>
       </div>

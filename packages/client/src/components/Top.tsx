@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export const Top = () => {
+  useEffect(() => {
+    document.title = "React-practice";
+  }, []);
+
   return (
     <section className="section">
       <div className="container">

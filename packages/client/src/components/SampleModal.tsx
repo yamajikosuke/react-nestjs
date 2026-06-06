@@ -46,6 +46,7 @@ export const SampleModal: React.FC<Props> = ({
     >
       <div>{data}</div>
       <p
+        data-testid="modal-close"
         style={{
           position: "absolute",
           top: "0rem",
