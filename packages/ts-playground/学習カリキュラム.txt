@@ -1,0 +1,135 @@
+第3章：ジェネリクス（Generics）を理解する（3〜5日）
+ここが TS の本番。
+ジェネリクスを理解すると 型の再利用性・柔軟性が爆上がりする。
+
+学ぶ内容
+・<T> の基本（generics.ts）
+・ジェネリック関数（generics.ts）
+・ジェネリッククラス（generics.ts）
+・ジェネリックインターフェース（generics_interface.ts）
+・制約（extends）
+・デフォルト型
+・keyof / typeof / in
+・Mapped Types（部分型・Pick・Partial・Record）
+
+目標
+・型を“抽象化”できるようになる
+・ライブラリの型定義が読めるようになる
+
+ミニ課題
+・配列の最初の要素を返す first<T>(arr: T[]): T を作る
+・API レスポンス型をジェネリクスで表現する
+　ApiResponse<T> = { data: T; status: number }
+
+
+
+第1週：クラスを完全に理解する（OOP × TypeScript）
+あなたは TS の基礎ができているので、
+クラスを理解すると一気に“型の世界”が広がる。
+
+学ぶ内容
+・class / constructor
+・public / private / protected
+・readonly
+・getter / setter
+・static
+・継承（extends）
+・抽象クラス（abstract）
+・interface と class の関係（implements）
+
+目標
+・OOP の基本を理解する
+・クラス設計ができるようになる
+・“型 × クラス”の関係が分かる
+
+演習
+・RPG キャラクタークラス
+・Character（抽象クラス）
+・Warrior / Mage（継承）
+・attack(), heal() を実装
+・BankAccount クラス
+・deposit(), withdraw()
+・balance は private
+
+📗 第2週：ジェネリクスを“使える”レベルにする
+ジェネリクスは TS の本丸。
+ここを理解すると 型の再利用性・柔軟性が爆上がりする。
+
+学ぶ内容
+・<T> の基本
+・ジェネリック関数
+・ジェネリックインターフェース
+・ジェネリッククラス
+・制約（extends）
+・keyof / typeof / in
+・Mapped Types（Partial / Pick / Record）
+
+目標
+・型を抽象化できる
+・ライブラリの型定義が読める
+・API 型やフォーム型を柔軟に作れる
+
+演習
+・配列の最初の要素を返す first<T>(arr: T[]): T
+・API レスポンス型 ApiResponse<T>
+・ジェネリックな Repository クラス
+・findById<T>()
+・save<T>()
+
+📙 第3週：型レベルプログラミング入門（TS の魔法）
+ここからが“TS の異世界”。
+でも、あなたのレベルなら絶対に理解できる。
+
+学ぶ内容
+・Conditional Types（条件型）
+・infer（型推論の抽出）
+・Distributive Conditional Types
+・Template Literal Types
+・Union 操作（Exclude / Extract / NonNullable）
+・再帰型（Recursive Types）
+
+目標
+・型でロジックを書ける
+・ライブラリの型が読める
+・“型の自動変換”ができる
+
+演習
+・配列の要素型を取り出す ElementType<T>
+・関数の戻り値型を抽出する MyReturnType<T>
+・"user.name" → "user" | "name" に分解する型
+
+📕 第4週：実践プロジェクト（総合演習）
+ここで クラス × ジェネリクス × 型レベル を全部使う。
+
+プロジェクト案（どれか1つ）
+① 型安全な API クライアントを作る
+fetch をジェネリクスでラップ
+
+エンドポイントごとに型を定義
+
+エラー型も型レベルで表現
+
+② Zod のミニ版を作る（型レベルの総合演習）
+string(), number() のバリデータ
+
+parse()
+
+型推論（infer）を使って型を抽出
+
+③ EventEmitter を TS で実装
+クラス
+
+ジェネリクス
+
+型レベルでイベント名と payload を制約
+
+🎯 1ヶ月後に到達する姿
+クラス → 自由自在
+
+ジェネリクス → 自分で設計できる
+
+型レベル → ライブラリの型が読める
+
+実務で「型の強者」として扱われる
+
+React / Node / NestJS の型が怖くなくなる
