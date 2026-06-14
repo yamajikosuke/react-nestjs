@@ -18,7 +18,7 @@ import {
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { EditModal, InputProps, Details } from "./EditModal";
+import { EditModal, Details } from "./EditModal";
 
 type itemProps = {
   id: number;
@@ -82,12 +82,12 @@ const UseMutationContent: React.FC = () => {
   });
 
   const createTodoMutation = useMutation({
-    mutationFn: async (data: InputProps) =>
+    mutationFn: async (data: TodoFormValues) =>
       axios.post("/todos/register", {
         is_done: false,
         data: data.title,
-        detail: data.detail,
-        dead_line: data.deadLine,
+        detail: data.detail ?? "",
+        dead_line: data.deadLine ? new Date(data.deadLine) : null,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -121,11 +121,7 @@ const UseMutationContent: React.FC = () => {
   };
 
   const handleClick = async (data: TodoFormValues) => {
-    await createTodoMutation.mutateAsync({
-      title: data.title,
-      detail: data.detail ?? "",
-      deadLine: data.deadLine ? new Date(data.deadLine) : null,
-    } as InputProps);
+    await createTodoMutation.mutateAsync(data);
   };
 
   const handleDelete = async (deleteId: number) => {

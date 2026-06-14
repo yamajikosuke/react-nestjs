@@ -10,12 +10,6 @@ export type Details = {
   detail: string;
 };
 
-export type InputProps = {
-  title: string;
-  detail: string;
-  deadLine: Date | null;
-};
-
 export type itemProps = {
   id: number;
   data: string;
