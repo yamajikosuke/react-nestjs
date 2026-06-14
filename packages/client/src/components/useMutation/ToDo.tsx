@@ -3,13 +3,7 @@ import { FormattedDate } from "react-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  QueryClient,
-  QueryClientProvider,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faListAlt,
@@ -18,15 +12,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { EditModal } from "./EditModal";
+import { CategoryItem, TodoItem } from "./todoApi";
 import {
-  CategoryItem,
-  TodoItem,
-  createTodo,
-  deleteTodo,
-  fetchCategoryList,
-  fetchTodoList,
-  updateTodo,
-} from "./todoApi";
+  useCategoryList,
+  useCreateTodo,
+  useDeleteTodo,
+  useTodoList,
+  useUpdateTodo,
+} from "./todoHooks";
 
 const todoSchema = z.object({
   title: z
@@ -40,7 +33,6 @@ const todoSchema = z.object({
 type TodoFormValues = z.infer<typeof todoSchema>;
 
 const UseMutationContent: React.FC = () => {
-  const queryClient = useQueryClient();
   const [isOpenCardModal, setIsOpenCardModal] = useState(false);
   const [editId, setEditId] = useState<number>(0);
   const {
@@ -53,59 +45,23 @@ const UseMutationContent: React.FC = () => {
     mode: "onChange",
   });
 
-  const {
-    data: items = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["todos"],
-    queryFn: fetchTodoList,
-  });
-
-  const { data: category = [] } = useQuery({
-    queryKey: ["todo-categories"],
-    queryFn: fetchCategoryList,
-  });
-
-  const createTodoMutation = useMutation({
-    mutationFn: async (data: TodoFormValues) =>
-      createTodo({
-        title: data.title,
-        detail: data.detail,
-        deadLine: data.deadLine ? new Date(data.deadLine) : null,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-      reset({ title: "", detail: "", deadLine: null });
-    },
-  });
-
-  const deleteTodoMutation = useMutation({
-    mutationFn: async (deleteId: number) => deleteTodo(deleteId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
-  });
-
-  const updateTodoMutation = useMutation({
-    mutationFn: async ({ id, item }: { id: number; item: TodoItem }) =>
-      updateTodo(id, {
-        data: item.data,
-        is_done: item.is_done,
-        detail: item.details?.detail,
-        dead_line: item.dead_line,
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
-    },
-  });
+  const { data: items = [], isLoading, error } = useTodoList();
+  const { data: category = [] } = useCategoryList();
+  const createTodoMutation = useCreateTodo();
+  const deleteTodoMutation = useDeleteTodo();
+  const updateTodoMutation = useUpdateTodo();
 
   const getItem = (id: number): TodoItem | null => {
     return items.find((item: TodoItem) => item.id === id) ?? null;
   };
 
   const handleClick = async (data: TodoFormValues) => {
-    await createTodoMutation.mutateAsync(data);
+    await createTodoMutation.mutateAsync({
+      title: data.title,
+      detail: data.detail,
+      deadLine: data.deadLine ? new Date(data.deadLine) : null,
+    });
+    reset({ title: "", detail: "", deadLine: null });
   };
 
   const handleDelete = async (deleteId: number) => {
@@ -125,9 +81,11 @@ const UseMutationContent: React.FC = () => {
 
     await updateTodoMutation.mutateAsync({
       id,
-      item: {
-        ...item,
+      data: {
+        data: item.data,
         is_done: !item.is_done,
+        detail: item.details?.detail,
+        dead_line: item.dead_line,
       },
     });
   };

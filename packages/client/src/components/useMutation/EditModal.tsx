@@ -2,9 +2,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { updateTodo } from "./todoApi";
+import { useUpdateTodo } from "./todoHooks";
 
 export type Details = {
   id: number;
@@ -41,7 +40,6 @@ export const EditModal: React.FC<Props> = ({
   item,
   setIsOpenCardModal,
 }) => {
-  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -56,22 +54,22 @@ export const EditModal: React.FC<Props> = ({
     },
   });
 
-  const updateTodoMutation = useMutation({
-    mutationFn: async (data: EditTodoFormValues) =>
-      updateTodo(id, {
-        data: data.title,
-        is_done: item.is_done,
-        detail: data.detail ?? "",
-        dead_line: data.deadLine ? new Date(data.deadLine) : null,
-      }),
+  const updateTodoMutation = useUpdateTodo({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["todos"] });
       setIsOpenCardModal(false);
     },
   });
 
   const submit = async (data: EditTodoFormValues): Promise<void> => {
-    await updateTodoMutation.mutateAsync(data);
+    await updateTodoMutation.mutateAsync({
+      id,
+      data: {
+        data: data.title,
+        is_done: item.is_done,
+        detail: data.detail ?? "",
+        dead_line: data.deadLine ? new Date(data.deadLine) : null,
+      },
+    });
   };
 
   return (
