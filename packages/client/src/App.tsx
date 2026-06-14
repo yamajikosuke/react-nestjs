@@ -15,6 +15,8 @@ export const App: React.FC = () => {
           path="/asynchronous-processing"
           element={<Page.AsynchronousProcessing />}
         />
+        <Route path="/useQuery" element={<Page.UseQuery />} />
+        <Route path="/useMutation" element={<Page.UseMutation />} />
         <Route path="/modal" element={<Page.ModalTest />} />
         <Route path="/qrcode" element={<Page.Qrcode />} />
         <Route path="/users-with-zod" element={<Page.UsersWithZod />} />

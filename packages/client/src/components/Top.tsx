@@ -13,6 +13,12 @@ export const Top = () => {
         <div className="content">
           <ul>
             <li>
+              <Link to="/useMutation">useMutation</Link>
+            </li>
+            <li>
+              <Link to="/useQuery">useQuery</Link>
+            </li>
+            <li>
               <Link to="/asynchronous-processing">非同期処理</Link>
             </li>
             <li>
