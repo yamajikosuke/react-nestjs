@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { FormattedDate } from "react-intl";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import {
   QueryClient,
   QueryClientProvider,
@@ -30,6 +32,17 @@ type CategoryProps = {
   name: string;
 };
 
+const todoSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "入力してください。" })
+    .max(50, { message: "最大文字数は50文字です" }),
+  detail: z.string().optional(),
+  deadLine: z.string().optional().nullable(),
+});
+
+type TodoFormValues = z.infer<typeof todoSchema>;
+
 const fetchTodoList = async (): Promise<itemProps[]> => {
   const res = await axios.get("/todos/list");
   return res.data;
@@ -49,7 +62,10 @@ const UseMutationContent: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<InputProps>();
+  } = useForm<TodoFormValues>({
+    resolver: zodResolver(todoSchema),
+    mode: "onChange",
+  });
 
   const {
     data: items = [],
@@ -104,8 +120,12 @@ const UseMutationContent: React.FC = () => {
     return items.find((item: itemProps) => item.id === id) ?? null;
   };
 
-  const handleClick = async (data: InputProps) => {
-    await createTodoMutation.mutateAsync(data);
+  const handleClick = async (data: TodoFormValues) => {
+    await createTodoMutation.mutateAsync({
+      title: data.title,
+      detail: data.detail ?? "",
+      deadLine: data.deadLine ? new Date(data.deadLine) : null,
+    } as InputProps);
   };
 
   const handleDelete = async (deleteId: number) => {

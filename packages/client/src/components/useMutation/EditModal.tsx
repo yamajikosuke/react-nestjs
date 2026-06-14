@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type Details = {
@@ -22,6 +24,17 @@ export type itemProps = {
   dead_line: Date;
 };
 
+const editTodoSchema = z.object({
+  title: z
+    .string()
+    .min(1, { message: "入力してください。" })
+    .max(50, { message: "最大文字数は50文字です" }),
+  detail: z.string().optional(),
+  deadLine: z.string().optional().nullable(),
+});
+
+type EditTodoFormValues = z.infer<typeof editTodoSchema>;
+
 type Props = {
   id: number;
   item: itemProps;
@@ -38,17 +51,23 @@ export const EditModal: React.FC<Props> = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<InputProps>({
+  } = useForm<EditTodoFormValues>({
+    resolver: zodResolver(editTodoSchema),
     mode: "onChange",
+    defaultValues: {
+      title: item.data,
+      detail: item.details?.detail ?? "",
+      deadLine: String(item.dead_line).substring(0, 10) || null,
+    },
   });
 
   const updateTodoMutation = useMutation({
-    mutationFn: async (data: InputProps) =>
+    mutationFn: async (data: EditTodoFormValues) =>
       axios.put(`/todos/${id}`, {
         data: data.title,
         is_done: item.is_done,
-        detail: data.detail,
-        dead_line: data.deadLine,
+        detail: data.detail ?? "",
+        dead_line: data.deadLine ? new Date(data.deadLine) : null,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -56,7 +75,7 @@ export const EditModal: React.FC<Props> = ({
     },
   });
 
-  const submit = async (data: InputProps): Promise<void> => {
+  const submit = async (data: EditTodoFormValues): Promise<void> => {
     await updateTodoMutation.mutateAsync(data);
   };
 
@@ -79,15 +98,12 @@ export const EditModal: React.FC<Props> = ({
             className="input"
             type="text"
             defaultValue={item.data}
-            {...register("title", {
-              required: "入力してください。",
-              maxLength: { value: 50, message: "最大文字数は50文字です" },
-            })}
+            {...register("title")}
           />
           <div style={{ color: "red" }}>{errors.title?.message}</div>
           <textarea
             className="textarea"
-            defaultValue={item.details.detail}
+            defaultValue={item.details?.detail ?? ""}
             placeholder="Input detail"
             {...register("detail")}
           />
