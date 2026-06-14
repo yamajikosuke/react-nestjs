@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export type Details = {
   id: number;
@@ -25,15 +26,14 @@ type Props = {
   id: number;
   item: itemProps;
   setIsOpenCardModal: (isOpenCardModal: boolean) => void;
-  fetchList: () => void;
 };
 
 export const EditModal: React.FC<Props> = ({
   id,
   item,
   setIsOpenCardModal,
-  fetchList,
 }) => {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -42,15 +42,22 @@ export const EditModal: React.FC<Props> = ({
     mode: "onChange",
   });
 
+  const updateTodoMutation = useMutation({
+    mutationFn: async (data: InputProps) =>
+      axios.put(`/todos/${id}`, {
+        data: data.title,
+        is_done: item.is_done,
+        detail: data.detail,
+        dead_line: data.deadLine,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      setIsOpenCardModal(false);
+    },
+  });
+
   const submit = async (data: InputProps): Promise<void> => {
-    await axios.put(`/todos/${id}`, {
-      data: data.title,
-      is_done: item.is_done,
-      detail: data.detail,
-      dead_line: data.deadLine,
-    });
-    fetchList();
-    setIsOpenCardModal(false);
+    await updateTodoMutation.mutateAsync(data);
   };
 
   return (

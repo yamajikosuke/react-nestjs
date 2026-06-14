@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { FormattedDate } from "react-intl";
 import { useForm } from "react-hook-form";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faListAlt,
@@ -23,9 +30,18 @@ type CategoryProps = {
   name: string;
 };
 
-export const UseMutation: React.FC = () => {
-  const [items, setItems] = useState<itemProps[]>([]);
-  const [category, setCategory] = useState<CategoryProps[]>([]);
+const fetchTodoList = async (): Promise<itemProps[]> => {
+  const res = await axios.get("/todos/list");
+  return res.data;
+};
+
+const fetchCategoryList = async (): Promise<CategoryProps[]> => {
+  const res = await axios.get("/todos/category");
+  return res.data;
+};
+
+const UseMutationContent: React.FC = () => {
+  const queryClient = useQueryClient();
   const [isOpenCardModal, setIsOpenCardModal] = useState(false);
   const [editId, setEditId] = useState<number>(0);
   const {
@@ -35,43 +51,66 @@ export const UseMutation: React.FC = () => {
     formState: { errors },
   } = useForm<InputProps>();
 
-  const fetchList = useCallback(async () => {
-    const res = await axios.get("/todos/list");
-    setItems(res.data);
-  }, []);
+  const {
+    data: items = [],
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["todos"],
+    queryFn: fetchTodoList,
+  });
 
-  const getCategoryList = useCallback(async () => {
-    const res = await axios.get("/todos/category");
-    // console.log(res.data);
-    setCategory(res.data);
-  }, []);
+  const { data: category = [] } = useQuery({
+    queryKey: ["todo-categories"],
+    queryFn: fetchCategoryList,
+  });
 
-  useEffect(() => {
-    fetchList();
-    getCategoryList();
-  }, [fetchList]);
+  const createTodoMutation = useMutation({
+    mutationFn: async (data: InputProps) =>
+      axios.post("/todos/register", {
+        is_done: false,
+        data: data.title,
+        detail: data.detail,
+        dead_line: data.deadLine,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+      reset({ title: "", detail: "", deadLine: null });
+    },
+  });
 
-  const getItem = (id: number) => {
-    return items.filter((item) => item.id === id)[0];
+  const deleteTodoMutation = useMutation({
+    mutationFn: async (deleteId: number) =>
+      axios.delete(`/todos/${deleteId}/delete`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+  const updateTodoMutation = useMutation({
+    mutationFn: async ({ id, item }: { id: number; item: itemProps }) =>
+      axios.put(`/todos/${id}`, {
+        data: item.data,
+        is_done: item.is_done,
+        detail: item.details?.detail,
+        dead_line: item.dead_line,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["todos"] });
+    },
+  });
+
+  const getItem = (id: number): itemProps | null => {
+    return items.find((item: itemProps) => item.id === id) ?? null;
   };
 
   const handleClick = async (data: InputProps) => {
-    console.log("data");
-    console.log(data);
-    await axios.post("/todos/register", {
-      is_done: false,
-      data: data.title,
-      detail: data.detail,
-      dead_line: data.deadLine,
-    });
-    fetchList();
-    reset({ title: "", detail: "", deadLine: null });
+    await createTodoMutation.mutateAsync(data);
   };
 
   const handleDelete = async (deleteId: number) => {
     if (window.confirm("削除してよろしいですか？")) {
-      await axios.delete(`/todos/${deleteId}/delete`);
-      fetchList();
+      await deleteTodoMutation.mutateAsync(deleteId);
     }
   };
 
@@ -81,14 +120,26 @@ export const UseMutation: React.FC = () => {
   };
 
   const updateIsDone = async (id: number): Promise<void> => {
-    await axios.put(`/todos/${id}`, {
-      data: getItem(id).data,
-      is_done: !getItem(id).is_done,
-      detail: getItem(id).details?.detail,
+    const item = getItem(id);
+    if (!item) return;
+
+    await updateTodoMutation.mutateAsync({
+      id,
+      item: {
+        ...item,
+        is_done: !item.is_done,
+      },
     });
-    fetchList();
   };
-  console.log(errors);
+
+  if (isLoading) {
+    return <p>ロード中...</p>;
+  }
+
+  if (error) {
+    return <p>エラーが発生しました: {error.message}</p>;
+  }
+
   return (
     <section className="section">
       <div className="container">
@@ -124,8 +175,8 @@ export const UseMutation: React.FC = () => {
             <div className="select">
               <select>
                 <option>選択</option>
-                {category.map((item) => {
-                  return <option>{item.name}</option>;
+                {category.map((item: CategoryProps) => {
+                  return <option key={item.name}>{item.name}</option>;
                 })}
               </select>
             </div>
@@ -154,7 +205,7 @@ export const UseMutation: React.FC = () => {
 
         <table className="table is-fullwidth">
           <tbody>
-            {items.map((item, idx) => {
+            {items.map((item: itemProps, idx: number) => {
               const titleStyle = item.is_done
                 ? { color: "#aaa", textDecoration: "line-through" }
                 : {};
@@ -212,11 +263,20 @@ export const UseMutation: React.FC = () => {
       {isOpenCardModal && (
         <EditModal
           id={editId}
-          item={getItem(editId)}
+          item={getItem(editId) ?? items[0]}
           setIsOpenCardModal={setIsOpenCardModal}
-          fetchList={fetchList}
         />
       )}
     </section>
+  );
+};
+
+export const UseMutation: React.FC = () => {
+  const [queryClient] = useState(() => new QueryClient());
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <UseMutationContent />
+    </QueryClientProvider>
   );
 };
