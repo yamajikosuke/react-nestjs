@@ -1,9 +1,10 @@
 import React from "react";
-import axios from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { updateTodo } from "./todoApi";
 
 export type Details = {
   id: number;
@@ -57,7 +58,7 @@ export const EditModal: React.FC<Props> = ({
 
   const updateTodoMutation = useMutation({
     mutationFn: async (data: EditTodoFormValues) =>
-      axios.put(`/todos/${id}`, {
+      updateTodo(id, {
         data: data.title,
         is_done: item.is_done,
         detail: data.detail ?? "",

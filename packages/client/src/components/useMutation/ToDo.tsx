@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { FormattedDate } from "react-intl";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,19 +17,16 @@ import {
   faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { EditModal, Details } from "./EditModal";
-
-type itemProps = {
-  id: number;
-  data: string;
-  is_done: boolean;
-  details: Details;
-  dead_line: Date;
-};
-
-type CategoryProps = {
-  name: string;
-};
+import { EditModal } from "./EditModal";
+import {
+  CategoryItem,
+  TodoItem,
+  createTodo,
+  deleteTodo,
+  fetchCategoryList,
+  fetchTodoList,
+  updateTodo,
+} from "./todoApi";
 
 const todoSchema = z.object({
   title: z
@@ -42,16 +38,6 @@ const todoSchema = z.object({
 });
 
 type TodoFormValues = z.infer<typeof todoSchema>;
-
-const fetchTodoList = async (): Promise<itemProps[]> => {
-  const res = await axios.get("/todos/list");
-  return res.data;
-};
-
-const fetchCategoryList = async (): Promise<CategoryProps[]> => {
-  const res = await axios.get("/todos/category");
-  return res.data;
-};
 
 const UseMutationContent: React.FC = () => {
   const queryClient = useQueryClient();
@@ -83,11 +69,10 @@ const UseMutationContent: React.FC = () => {
 
   const createTodoMutation = useMutation({
     mutationFn: async (data: TodoFormValues) =>
-      axios.post("/todos/register", {
-        is_done: false,
-        data: data.title,
-        detail: data.detail ?? "",
-        dead_line: data.deadLine ? new Date(data.deadLine) : null,
+      createTodo({
+        title: data.title,
+        detail: data.detail,
+        deadLine: data.deadLine ? new Date(data.deadLine) : null,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
@@ -96,16 +81,15 @@ const UseMutationContent: React.FC = () => {
   });
 
   const deleteTodoMutation = useMutation({
-    mutationFn: async (deleteId: number) =>
-      axios.delete(`/todos/${deleteId}/delete`),
+    mutationFn: async (deleteId: number) => deleteTodo(deleteId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["todos"] });
     },
   });
 
   const updateTodoMutation = useMutation({
-    mutationFn: async ({ id, item }: { id: number; item: itemProps }) =>
-      axios.put(`/todos/${id}`, {
+    mutationFn: async ({ id, item }: { id: number; item: TodoItem }) =>
+      updateTodo(id, {
         data: item.data,
         is_done: item.is_done,
         detail: item.details?.detail,
@@ -116,8 +100,8 @@ const UseMutationContent: React.FC = () => {
     },
   });
 
-  const getItem = (id: number): itemProps | null => {
-    return items.find((item: itemProps) => item.id === id) ?? null;
+  const getItem = (id: number): TodoItem | null => {
+    return items.find((item: TodoItem) => item.id === id) ?? null;
   };
 
   const handleClick = async (data: TodoFormValues) => {
@@ -191,7 +175,7 @@ const UseMutationContent: React.FC = () => {
             <div className="select">
               <select>
                 <option>選択</option>
-                {category.map((item: CategoryProps) => {
+                {category.map((item: CategoryItem) => {
                   return <option key={item.name}>{item.name}</option>;
                 })}
               </select>
@@ -221,7 +205,7 @@ const UseMutationContent: React.FC = () => {
 
         <table className="table is-fullwidth">
           <tbody>
-            {items.map((item: itemProps, idx: number) => {
+            {items.map((item: TodoItem, idx: number) => {
               const titleStyle = item.is_done
                 ? { color: "#aaa", textDecoration: "line-through" }
                 : {};
