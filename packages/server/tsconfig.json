@@ -10,7 +10,6 @@
     "lib": ["es2020"],
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
     "incremental": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
@@ -18,9 +17,9 @@
     "esModuleInterop": true,
     "noEmitOnError": false,
     "noEmit": false,
+    "ignoreDeprecations": "6.0",
     "strict": false,
-    "noImplicitThis": false,
-    "alwaysStrict": false
+    "noImplicitThis": false
   },
   "exclude": ["node_modules"]
 }
