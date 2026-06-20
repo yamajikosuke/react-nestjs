@@ -44,7 +44,6 @@
     "react-router-dom": "^6.16.0",
     "react-scroll": "^1.8.9",
     "react-select": "^5.7.4",
-    "react-sortable-hoc": "^2.0.0",
     "redux-thunk": "^2.4.2",
     "styled-components": "^6.0.8",
     "uuid": "^9.0.1",
@@ -81,7 +80,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "@vitest/ui": "^4.1.9",
     "terser": "^5.48.0",
-    "typescript": "^6.0.3",
+    "typescript": "^5.4.5",
     "vite": "^5.4.21",
     "vitest": "^4.1.9"
   }
