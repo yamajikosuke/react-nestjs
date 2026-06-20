@@ -8,13 +8,14 @@ export default defineConfig({
   publicDir: "public",
   server: {
     port: 3000,
+    strictPort: true,
     proxy: {
       "/api": {
         target: "http://localhost:3001",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
-      "/todos": {
+      "^/(todos|users|dictionary|keys)(/|$)": {
         target: "http://localhost:3001",
         changeOrigin: true,
       },
