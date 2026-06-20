@@ -1,8 +1,7 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema, RegisterForm } from "./schema/registerSchema";
+import { registerSchema, type RegisterForm } from "./schema/registerSchema";
 import { useRegisterStore } from "./store/useRegisterStore";
 import { useLeaveConfirm } from "./hooks/useLeaveConfirm";
 
@@ -14,12 +13,12 @@ export const RegistrationForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterForm>({
+  } = useForm({
     resolver: zodResolver(registerSchema),
     mode: "onBlur",
     defaultValues: {
       ...data,
-      gender: (data.gender as "male" | "female") ?? ("" as any),
+      gender: data.gender ?? "",
     },
   });
 

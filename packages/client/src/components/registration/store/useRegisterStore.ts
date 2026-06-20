@@ -2,11 +2,11 @@ import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type { RegisterForm } from "../schema/registerSchema";
 
-type RegisterFormInitial = Omit<RegisterForm, "gender"> & {
-  gender: "male" | "female" | string;
+export type RegisterFormDraft = Omit<RegisterForm, "gender"> & {
+  gender: "" | "male" | "female";
 };
 
-const initialData: RegisterFormInitial = {
+const initialData: RegisterFormDraft = {
   name: "",
   gender: "",
   email: "",
@@ -18,8 +18,8 @@ const initialData: RegisterFormInitial = {
 };
 
 type State = {
-  data: RegisterFormInitial;
-  setData: (v: Partial<RegisterFormInitial>) => void;
+  data: RegisterFormDraft;
+  setData: (v: Partial<RegisterFormDraft>) => void;
   clear: () => void;
 };
 

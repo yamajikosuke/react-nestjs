@@ -5,7 +5,7 @@ export const useLeaveConfirm = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/complete") return;
+    if (location.pathname === "/registration/complete") return;
 
     const handler = (e: BeforeUnloadEvent) => {
       e.preventDefault();
