@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import arrayMove from "array-move";
 
 export const FormBuilder: React.FC = () => {
   const [data, setData] = useState<string[]>([""]);

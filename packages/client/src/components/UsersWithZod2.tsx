@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faListAlt } from "@fortawesome/free-solid-svg-icons";
 import { useFoodsStore } from "../store/useStore";
-import { array } from "zod/v3/external.cjs";
 
 /**
  * 応用的なフォームバリデーションの例

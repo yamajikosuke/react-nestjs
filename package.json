@@ -2,9 +2,10 @@
   "name": "react-app",
   "version": "0.0.0",
   "scripts": {
-    "dev:client": "npm start --prefix ./packages/client",
+    "dev:client": "npm run dev --prefix ./packages/client",
     "dev:server": "npm start --prefix ./packages/server",
     "install:all": "npm install && npm install --prefix ./packages/client && npm install --prefix ./packages/server",
-    "build": "npm run build --prefix ./packages/client && npm run build --prefix ./packages/server"
+    "build": "npm run build --prefix ./packages/client && npm run build --prefix ./packages/server",
+    "preview": "npm run preview --prefix ./packages/client"
   }
 }
