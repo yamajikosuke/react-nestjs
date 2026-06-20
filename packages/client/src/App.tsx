@@ -17,6 +17,9 @@ export const App: React.FC = () => {
         />
         <Route path="/useQuery" element={<Page.UseQuery />} />
         <Route path="/useMutation" element={<Page.UseMutation />} />
+        <Route path="/registration" element={<Page.RegistrationForm />} />
+        <Route path="/registration/confirm" element={<Page.Confirm />} />
+        <Route path="/registration/complete" element={<Page.Complete />} />
         <Route path="/modal" element={<Page.ModalTest />} />
         <Route path="/qrcode" element={<Page.Qrcode />} />
         <Route path="/users-with-zod" element={<Page.UsersWithZod />} />
