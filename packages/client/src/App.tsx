@@ -1,15 +1,29 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+import { PrivateRoute } from "./route/PrivateRoute";
+
 import "bulma/css/bulma.css";
 import "bulma-switch/dist/css/bulma-switch.min.css";
 
 import { Initializer } from "./components/Initializer";
 import * as Page from "./components/";
+import { Navigate } from "react-router-dom";
 
 export const App: React.FC = () => {
   return (
     <Initializer>
       <Routes>
+        <Route path="/login" element={<Page.LoginForm />} />
+        <Route
+          path="/login/member"
+          element={
+            <PrivateRoute>
+              <Page.MemberPage />
+            </PrivateRoute>
+          }
+        />
+        {/* デフォルトはログインへ */}
+        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
         <Route path="/zustand" element={<Page.Zustand />} />
         <Route
           path="/asynchronous-processing"

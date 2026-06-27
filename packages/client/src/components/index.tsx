@@ -7,6 +7,8 @@ export { UseMutation } from "./useMutation/ToDo";
 export { RegistrationForm } from "./registration/RegistrationForm";
 export { Complete } from "./registration/Complete";
 export { Confirm } from "./registration/Confirm";
+export { LoginForm } from "./login/LoginForm";
+export { MemberPage } from "./login/MemberPage";
 export { ToDo } from "./ToDo";
 export { Users } from "./Users";
 export { Qrcode } from "./Qrcode";

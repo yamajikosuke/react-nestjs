@@ -13,6 +13,9 @@ export const Top = () => {
         <div className="content">
           <ul>
             <li>
+              <Link to="/login">ログインページ</Link>
+            </li>
+            <li>
               <Link to="/registration">登録フォーム</Link>
             </li>
             <li>
