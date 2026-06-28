@@ -17,18 +17,15 @@ if (!root) {
 console.log("import.meta.env.DEV:", import.meta.env.DEV);
 
 const bootstrap = async () => {
-  // 開発環境だけ MSW を起動
-  if (import.meta.env.DEV) {
-    const { worker } = await import("./mocks/browser");
-    await worker.start({
-      onUnhandledRequest: "bypass",
-      serviceWorker: {
-        url: "/mockServiceWorker.js",
-      },
-    });
-    // ★ SW が完全に ready になるまで待つ
-    await navigator.serviceWorker.ready;
-  }
+  const { worker } = await import("./mocks/browser");
+  await worker.start({
+    onUnhandledRequest: "bypass",
+    serviceWorker: {
+      url: "/mockServiceWorker.js",
+    },
+  });
+  // ★ SW が完全に ready になるまで待つ
+  await navigator.serviceWorker.ready;
 
   ReactDOM.createRoot(root).render(
     <BrowserRouter>
