@@ -17,12 +17,8 @@ if (!root) {
 console.log("import.meta.env.DEV:", import.meta.env.DEV);
 
 const bootstrap = async () => {
-  const isHttps = window.location.protocol === "https:";
-  const isLocalhost =
-    window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1";
-
-  if (isHttps || isLocalhost) {
+  // ★ 開発環境では MSW を起動する
+  if (import.meta.env.DEV) {
     const { worker } = await import("./mocks/browser");
     await worker.start({
       onUnhandledRequest: "bypass",
