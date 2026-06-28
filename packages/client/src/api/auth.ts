@@ -1,36 +1,18 @@
-import { apiFetch } from "./client";
-import { LogoutResponse, ApiError, RefreshResponse } from "./types";
-import { useAuthStore } from "../store/authStore";
+import { api } from "./axios";
+import { LoginResponse, LogoutResponse, RefreshResponse } from "./types";
 
-export const refreshAccessToken = async () => {
-  const refreshToken = useAuthStore.getState().refreshToken;
+// ログイン API
+export const loginApi = (loginId: string, password: string) =>
+  api.post<LoginResponse>("/login", { loginId, password });
 
-  if (!refreshToken) return null;
+// ログアウト API
+export const logoutApi = () => api.post<LogoutResponse>("/logout");
 
-  const result = await apiFetch<{ accessToken: string }>("/api/refresh", {
-    method: "POST",
-    body: JSON.stringify({ refreshToken }),
-    headers: { "Content-Type": "application/json" },
-  });
-
-  if ("status" in result) {
-    useAuthStore.getState().logout();
-    return null;
-  }
-
-  useAuthStore.getState().updateAccessToken(result.accessToken);
-  return result.accessToken;
-};
-
-export const logoutApi = async (): Promise<LogoutResponse | ApiError> => {
-  return apiFetch<LogoutResponse>("/api/logout", {
-    method: "POST",
-  });
-};
-
+// Refresh Token API（interceptor が内部で使う）
 export const refreshApi = (refreshToken: string) =>
-  apiFetch<RefreshResponse>("/api/refresh", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ refreshToken }),
-  });
+  api.post<RefreshResponse>("/refresh", { refreshToken });
+
+// /api/me を叩いてログイン状態を確認する API
+export const meApi = () => {
+  return api.get("/api/me");
+};

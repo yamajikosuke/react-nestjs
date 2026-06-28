@@ -7,17 +7,18 @@ export const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    const result = await logoutApi();
+    try {
+      // axios 版 logoutApi を呼ぶ
+      const res = await logoutApi();
 
-    if ("status" in result) {
+      // 成功レスポンスは res.data に入る
+      if (res.data.success === true) {
+        logout(); // Zustand のトークン削除
+        navigate("/login", { replace: true }); // ログイン画面へ
+      }
+    } catch (e) {
+      // axios は失敗時に throw するのでここに来る
       alert("ログアウトに失敗しました");
-      return;
-    }
-
-    // LogoutResponse（成功）
-    if (result.success === true) {
-      logout();
-      navigate("/login", { replace: true });
     }
   };
 

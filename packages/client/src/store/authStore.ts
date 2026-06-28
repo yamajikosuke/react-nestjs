@@ -37,6 +37,8 @@ export const useAuthStore = create<AuthState>()(
           accessToken: token,
         }),
     }),
-    { name: "auth-storage" },
+    {
+      name: "auth-storage", // localStorage のキー名
+    },
   ),
 );

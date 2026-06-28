@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   return (
     <Initializer>
       <Routes>
-        <Route path="/login" element={<Page.LoginForm />} />
+        <Route path="/login" element={<Page.LoginPage />} />
         <Route
           path="/login/member"
           element={

@@ -2,11 +2,6 @@ export type LogoutResponse = {
   success: true;
 };
 
-export type ApiError = {
-  status: number;
-  message: string;
-};
-
 export type LoginSuccess = {
   authResult: true;
   accessToken: string;
@@ -22,4 +17,9 @@ export type LoginResponse = LoginSuccess | LoginFailure;
 
 export type RefreshResponse = {
   accessToken: string;
+};
+
+export type MeResponse = {
+  userId: string;
+  name: string;
 };

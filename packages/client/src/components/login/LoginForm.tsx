@@ -1,67 +1,90 @@
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuthStore } from "../../store/authStore";
 import { useNavigate } from "react-router-dom";
-import { apiFetch } from "../../api/client";
-import { LoginResponse, ApiError } from "../../api/types";
+import { loginApi } from "../../api/auth";
+import { LoginResponse } from "../../api/types";
+
+const loginSchema = z.object({
+  loginId: z.string().min(1, "IDを入力してください"),
+  password: z.string().min(1, "パスワードを入力してください"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export const LoginForm = () => {
-  const [loginId, setLoginId] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  const login = useAuthStore((s) => s.login);
   const navigate = useNavigate();
+  const login = useAuthStore((s) => s.login);
 
-  const onSubmit = async () => {
-    setError("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    mode: "onBlur",
+  });
 
-    const res = await apiFetch<LoginResponse>("/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ loginId, password }),
-    });
+  const onSubmit = async (values: LoginFormValues) => {
+    try {
+      const res = await loginApi(values.loginId, values.password);
+      const data: LoginResponse = res.data;
 
-    // ① ApiError（500 など）
-    if ("status" in res) {
-      if (res.status === 500) {
-        setError("サーバーエラーが発生しました（500）");
-      } else {
-        setError(res.message);
+      if (data.authResult === false) {
+        alert(data.message);
+        return;
       }
-      return;
-    }
 
-    // ② LoginFailure（401）
-    if (res.authResult === false) {
-      setError("ID またはパスワードが違います（401）");
-      return;
+      login(data.accessToken, data.refreshToken);
+      navigate("/login/member");
+    } catch {
+      alert("サーバーエラーが発生しました");
     }
-
-    // 成功（LoginResponse 型）
-    login(res.accessToken, res.refreshToken);
-    navigate("/login/member");
   };
 
   return (
-    <div>
-      <h1>ログイン</h1>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md"
+    >
+      <h1 className="text-2xl font-bold mb-6 text-center">ログイン</h1>
 
-      <input
-        value={loginId}
-        onChange={(e) => setLoginId(e.target.value)}
-        placeholder="ID"
-      />
+      {/* ID */}
+      <div className="mb-4">
+        <label className="block mb-1 font-medium">ID</label>
+        <input
+          {...register("loginId")}
+          placeholder="ID"
+          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {errors.loginId && (
+          <p className="text-red-500 text-sm mt-1">{errors.loginId.message}</p>
+        )}
+      </div>
 
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        type="password"
-      />
+      {/* Password */}
+      <div className="mb-6">
+        <label className="block mb-1 font-medium">Password</label>
+        <input
+          {...register("password")}
+          placeholder="Password"
+          type="password"
+          className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        {errors.password && (
+          <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+        )}
+      </div>
 
-      <button onClick={onSubmit}>ログイン</button>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+      {/* ログインボタン */}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition disabled:opacity-50"
+      >
+        {isSubmitting ? "送信中..." : "ログイン"}
+      </button>
+    </form>
   );
 };
