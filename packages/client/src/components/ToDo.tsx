@@ -36,12 +36,12 @@ export const ToDo: React.FC = () => {
   } = useForm<InputProps>();
 
   const fetchList = useCallback(async () => {
-    const res = await axios.get("/todos/list");
+    const res = await axios.get("/api/todos/list");
     setItems(res.data);
   }, []);
 
   const getCategoryList = useCallback(async () => {
-    const res = await axios.get("/todos/category");
+    const res = await axios.get("/api/todos/category");
     // console.log(res.data);
     setCategory(res.data);
   }, []);
@@ -58,7 +58,7 @@ export const ToDo: React.FC = () => {
   const handleClick = async (data: InputProps) => {
     console.log("data");
     console.log(data);
-    await axios.post("/todos/register", {
+    await axios.post("/api/todos/register", {
       is_done: false,
       data: data.title,
       detail: data.detail,
@@ -70,7 +70,8 @@ export const ToDo: React.FC = () => {
 
   const handleDelete = async (deleteId: number) => {
     if (window.confirm("削除してよろしいですか？")) {
-      await axios.delete(`/todos/${deleteId}/delete`);
+      await axios.delete(`/api/todos/${deleteId}/delete`);
+
       fetchList();
     }
   };
@@ -81,7 +82,7 @@ export const ToDo: React.FC = () => {
   };
 
   const updateIsDone = async (id: number): Promise<void> => {
-    await axios.put(`/todos/${id}`, {
+    await axios.put(`/api/todos/${id}`, {
       data: getItem(id).data,
       is_done: !getItem(id).is_done,
       detail: getItem(id).details?.detail,

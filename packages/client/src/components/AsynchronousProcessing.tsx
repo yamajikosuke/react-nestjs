@@ -77,7 +77,7 @@ export const AsynchronousProcessing: React.FC = () => {
   const fetchData = async () => {
     try {
       console.log("データを取得中...");
-      const res = await axios.get("/users");
+      const res = await axios.get("/api/users");
       return res;
     } catch (error) {
       console.log("データを取得中にエラーが発生しました:", error);

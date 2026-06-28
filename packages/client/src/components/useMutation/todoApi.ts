@@ -20,7 +20,7 @@ export type CategoryItem = {
  * @returns {Promise<TodoItem[]>} ToDo 一覧
  */
 export const fetchTodoList = async (): Promise<TodoItem[]> => {
-  const res = await axios.get("/todos/list");
+  const res = await axios.get("/api/todos/list");
   return res.data;
 };
 
@@ -29,7 +29,7 @@ export const fetchTodoList = async (): Promise<TodoItem[]> => {
  * @returns {Promise<CategoryItem[]>} カテゴリ一覧
  */
 export const fetchCategoryList = async (): Promise<CategoryItem[]> => {
-  const res = await axios.get("/todos/category");
+  const res = await axios.get("/api/todos/category");
   return res.data;
 };
 
@@ -43,7 +43,7 @@ export const createTodo = async (data: {
   detail?: string;
   deadLine?: Date | null;
 }) => {
-  return axios.post("/todos/register", {
+  return axios.post("/api/todos/register", {
     is_done: false,
     data: data.title,
     detail: data.detail ?? "",
@@ -57,7 +57,7 @@ export const createTodo = async (data: {
  * @returns {Promise<import("axios").AxiosResponse>} 削除結果
  */
 export const deleteTodo = async (id: number) => {
-  return axios.delete(`/todos/${id}/delete`);
+  return axios.delete(`/api/todos/${id}/delete`);
 };
 
 /**
@@ -75,5 +75,5 @@ export const updateTodo = async (
     dead_line?: Date | null;
   },
 ) => {
-  return axios.put(`/todos/${id}`, data);
+  return axios.put(`/api/todos/${id}`, data);
 };

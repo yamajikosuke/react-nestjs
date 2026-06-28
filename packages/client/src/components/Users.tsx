@@ -25,7 +25,7 @@ export const Users: React.FC = () => {
   } = useForm<InputUserProps>();
 
   const fetchList = useCallback(async () => {
-    const res = await axios.get("/users");
+    const res = await axios.get("/api/users");
     setItems(res.data);
   }, []);
 
@@ -36,7 +36,7 @@ export const Users: React.FC = () => {
   const handleClick = async (data: InputUserProps) => {
     console.log("data");
     console.log(data);
-    await axios.post("/users/register", {
+    await axios.post("/api/users/register", {
       screenName: data.screenName,
       password: data.password,
     });

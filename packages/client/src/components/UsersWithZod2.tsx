@@ -95,7 +95,7 @@ export const UsersWithZod2: React.FC = () => {
   //let tmpFoods: string[] = [];
 
   const handleRegister = async (data: Schema) => {
-    await axios.post("/users/register", {
+    await axios.post("/api/users/register", {
       screenName: data.screenName,
       password: data.number,
     });

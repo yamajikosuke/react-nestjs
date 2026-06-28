@@ -5,7 +5,7 @@ import axios from "axios";
 import { TodoItem, TodoProps } from "./store/store";
 
 export const getTodos = createAsyncThunk("todos/getTodos", async () => {
-  const res = await axios.get("/todos/");
+  const res = await axios.get("/api/todos/");
   return res.data;
 });
 
@@ -31,7 +31,7 @@ const todoSlice = createSlice({
           console.log(action.payload);
           //   state.loading = false;
           state.todos = action.payload;
-        }
+        },
       )
       .addCase(getTodos.rejected, (state) => {
         // state.loading = false;

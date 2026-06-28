@@ -46,7 +46,7 @@ export const UsersWithZod: React.FC = () => {
   });
 
   const fetchList = useCallback(async () => {
-    const res = await axios.get("/users");
+    const res = await axios.get("/api/users");
     setItems(res.data);
   }, []);
 
@@ -55,7 +55,7 @@ export const UsersWithZod: React.FC = () => {
   }, [fetchList]);
 
   const handleClick = async (data: Schema) => {
-    await axios.post("/users/register", {
+    await axios.post("/api/users/register", {
       screenName: data.screenName,
       password: data.password,
     });
