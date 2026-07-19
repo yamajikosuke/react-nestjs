@@ -10,6 +10,8 @@ import { Category } from './todos/category.entity';
 import { TodosModule } from './todos/todos.module';
 import { DictionaryModule } from './dictionary/dictionary.module';
 import { User } from './users/users.entity';
+import { UserProfile } from './user-profiles/user-profile.entity';
+import { UserProfilesModule } from './user-profiles/user-profiles.module';
 // import { Key } from './dictionary/keys.entity';
 
 @Module({
@@ -21,10 +23,11 @@ import { User } from './users/users.entity';
       username: 'root',
       password: 'password',
       database: 'develop',
-      entities: [Todo, Details, Category, User],
+      entities: [Todo, Details, Category, User, UserProfile],
       synchronize: true,
     }),
     UsersModule,
+    UserProfilesModule,
     TodosModule,
     DictionaryModule,
   ],

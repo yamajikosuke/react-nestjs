@@ -13,6 +13,9 @@ export const Top = () => {
         <div className="content">
           <ul>
             <li>
+              <Link to="/userList">ユーザー一覧画面</Link>
+            </li>
+            <li>
               <Link to="/login">ログインページ</Link>
             </li>
             <li>

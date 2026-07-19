@@ -38,6 +38,8 @@ export const App: React.FC = () => {
         <Route path="/qrcode" element={<Page.Qrcode />} />
         <Route path="/users-with-zod" element={<Page.UsersWithZod />} />
         <Route path="/users-with-zod2" element={<Page.UsersWithZod2 />} />
+        <Route path="/userForm" element={<Page.UserFormPage />} />
+        <Route path="/userList" element={<Page.UserListPage />} />
         <Route path="/users" element={<Page.Users />} />
         <Route path="/hebuban" element={<Page.Hebuban />} />
         <Route path="/stepper" element={<Page.Stepper />} />

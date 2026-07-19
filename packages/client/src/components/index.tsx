@@ -43,6 +43,8 @@ export { ReactHookFormBasicValidation } from "./ReactHookForm/BasicValidation";
 export { ReactHookFormBasicValidationDisplayError } from "./ReactHookForm/BasicValidationDisplayError";
 export { ReactHookFormProvider } from "./ReactHookForm/FormProvider";
 export { ReactHookFormController } from "./ReactHookForm/Controller";
+export { UserFormPage } from "./userProfiles/UserFormPage";
+export { UserListPage } from "./userProfiles/UserListPage";
 export { FontAwesome } from "./FontAwesome";
 export { Suspense } from "./LearningReact/Suspense";
 export { CustomHook1 } from "./CustomHook/CustomHook_1";

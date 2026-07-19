@@ -5,6 +5,7 @@ import formReducer from "../FormSlice";
 import userReducer from "../UsersSlice";
 import gachaReducer from "../gachaSlice";
 import TodoReducer from "../TodoSlice";
+import userProfilesReducer from "../../userProfiles/store/userProfilesSlice";
 import { Details } from "../../EditModal";
 
 export type TodoItem = {
@@ -33,11 +34,25 @@ export type UserStoreProps = {
   error: boolean;
 };
 
+export type UserProfile = {
+  id: number;
+  name: string;
+  email: string;
+};
+
+export type UserProfilesStoreProps = {
+  userProfiles: {
+    items: UserProfile[];
+    loading: boolean;
+    error: string | null;
+  };
+};
+
 export type GachaStoreProps = {
   gacha: [
     {
       name: string;
-    }
+    },
   ];
 };
 
@@ -47,6 +62,10 @@ const reducer = {
   users: userReducer,
   gacha: gachaReducer,
   todos: TodoReducer,
+  userProfiles: userProfilesReducer,
 };
 
 export const store = configureStore({ reducer });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
