@@ -1,0 +1,10 @@
+
+watch:dist: npx nodemon --watch src --ext ts --exec "npm run build && node dist/main.js"
+起動コマンド
+
+リポジトリルートから実行:
+npm run watch:dist --prefix ./packages/server
+
+server 配下で実行:
+npm run watch:dist
+

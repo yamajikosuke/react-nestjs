@@ -1,0 +1,65 @@
+
+このファイルは、ユーザー情報機能専用の Redux ストアロジックです。
+対象: userProfilesSlice.ts
+
+
+●役割（このファイルが担っていること）
+
+1.ユーザー一覧データの状態を保持する
+2.API通信（一覧取得・1件取得・登録更新・削除）を定義する
+3.API通信の結果に応じて loading と error と items を更新する
+
+
+●状態の設計
+
+items: UserProfile[]
+　一覧表示に使うユーザー配列
+loading: boolean
+　通信中フラグ
+error: string | null
+　エラーメッセージ
+
+●型定義
+
+UserProfile
+　1ユーザーの形（id, name, email）
+SaveUserProfileArgs
+　登録・更新共通の引数
+　id があると更新、ないと新規登録
+
+●非同期処理（createAsyncThunk）
+
+fetchUserProfiles
+　GET /user-profiles
+　一覧を取得して items に反映
+fetchUserProfileById
+　GET /user-profiles/:id
+　編集画面で1件取得する用途
+saveUserProfile
+　id あり: PUT /user-profiles/:id（更新）
+　id なし: POST /user-profiles（新規）
+deleteUserProfile
+　DELETE /user-profiles/:id
+　削除後は削除した id を返す
+
+定義は userProfilesSlice.ts:25 から続いています。
+
+●状態更新ロジック（extraReducers）
+
+pending
+　どのAPIでも基本 loading = true, error = null
+fulfilled
+　一覧取得: items を丸ごと置き換え
+　保存: 既存IDがあれば上書き、なければ先頭追加
+　削除: 対象IDを filter で除外
+rejected
+　loading = false にして、用途別メッセージを error にセット
+
+
+●実装のポイント
+保存処理を1つの thunk にまとめている
+　id の有無で新規/更新を切り替えるため、呼び出し側がシンプル
+一覧の即時反映ができる
+　保存・削除で items を直接更新しているので再取得なしでもUI更新可能
+fetchUserProfileById.fulfilled では items を更新していない
+　取得結果は主にフォーム側で unwrap() して使う設計です（一覧状態とは分離）
